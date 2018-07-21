@@ -3,37 +3,31 @@ package main
 import (
 	"log"
 	"net/http"
-	// "os"
-	"fmt"
-
-	// "github.com/gin-gonic/gin"
+	"os"
+	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 )
 
-func handler(w http.ResponseWriter, r *http.Request){
-	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
-
-}
 
 func main() {
 
 
-	http.HandleFunc("/", handler)
-    log.Fatal(http.ListenAndServe(":8080", nil))
-	// port := os.Getenv("PORT")
+	
+	port := os.Getenv("PORT")
 
-	// if port == "" {
-	// 	log.Fatal("$PORT must be set")
-	// }
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
 
-	// router := gin.New()
-	// router.Use(gin.Logger())
+	router := gin.New()
+	router.Use(gin.Logger())
 	// router.LoadHTMLGlob("templates/*.tmpl.html")
 	// router.Static("/static", "static")
 
-	// router.GET("/", func(c *gin.Context) {
-	// 	c.HTML(http.StatusOK, "index.tmpl.html", nil)
-	// })
+	router.GET("/:name", func(c *gin.Context) {
+		name := c.Param("name")
+		c.String(http.StatusOK, "Hello  %s! You are receving data from somewhere on the cloud", name)
+	})
 
-	// router.Run(":" + port)
+	router.Run(":" + port)
 }
