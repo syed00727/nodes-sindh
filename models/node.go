@@ -4,13 +4,15 @@ import (
 	"fmt"
 
 	"github.com/heroku/go-getting-started/utils"
+	"time"
 )
 
 type Node struct {
 	Power   int
+	Ping time.Time
 	Status  byte
-	Voltage float32
-	Current float32
+	Voltage float64
+	Current float64
 	Id      int
 }
 

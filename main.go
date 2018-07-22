@@ -8,11 +8,8 @@ import (
 	_ "github.com/heroku/x/hmetrics/onload"
 	"github.com/heroku/go-getting-started/services"
 	"net/http"
+	"strconv"
 )
-
-func processPinStatus(update string) {
-
-}
 
 func main() {
 
@@ -37,9 +34,30 @@ func main() {
 	//
 	//})
 
-	router.GET("/status/node/:id", func(c *gin.Context) {
+	router.GET("/node/status/:id", func(c *gin.Context) {
 
-		c.String(http.StatusOK, nodeservice.GetFormattedStatusString(5))
+		id, e := strconv.Atoi(c.Param("id"))
+		if e != nil {
+			c.String(http.StatusBadRequest, "Something went wrong")
+		}
+		c.String(http.StatusOK, nodeservice.GetNodeLastPingString(id))
 	})
+
+	//
+	router.POST("/node/status/:status", func(c *gin.Context) {
+		status := c.Param("status")
+		 res:= nodeservice.UpdateNodeStatusAndSendCommand(status)
+		 if res == "OK" {
+		 	c.String(http.StatusOK, res)
+		 } else {
+		 	c.String(http.StatusBadRequest, res)
+		}
+	} )
+	router.POST("/node/command/:command", func(c *gin.Context) {
+
+	})
+
 	router.Run(":" + port)
+
+
 }
