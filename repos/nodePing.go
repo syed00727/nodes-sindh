@@ -22,7 +22,7 @@ func init() {
 	//connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, dbPort, dbSchema)
 
 	var err error
-	db, err = sql.Open("postgres", connStr)
+	//db, err = sql.Open("postgres", connStr)
 	db, err = sql.Open("postgres", os.Getenv("DATABASE_URL")+"?sslmode=require")
 	if err != nil {
 		panic(err)
