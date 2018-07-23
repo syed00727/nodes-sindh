@@ -67,7 +67,7 @@ func main() {
 
 	})
 
-	router.POST("/health", func(c *gin.Context) {
+	router.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "I'm good, How are you?")
 	})
 
