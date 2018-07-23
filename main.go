@@ -46,18 +46,31 @@ func main() {
 	//
 	router.POST("/node/status/:status", func(c *gin.Context) {
 		status := c.Param("status")
-		 res:= nodeservice.UpdateNodeStatusAndSendCommand(status)
-		 if res == "OK" {
-		 	c.String(http.StatusOK, res)
-		 } else {
-		 	c.String(http.StatusBadRequest, res)
+		res := nodeservice.UpdateNodeStatusAndSendCommand(status)
+		if res == "OK" {
+			c.String(http.StatusOK, res)
+		} else {
+			c.String(http.StatusBadRequest, res)
 		}
-	} )
-	router.POST("/node/command/:command", func(c *gin.Context) {
+	})
+	router.POST("/node/command/:action", func(c *gin.Context) {
+		command := c.Param("action")
+		id, e := strconv.Atoi(c.Query("id"))
+		if e != nil {
+			c.String(http.StatusBadRequest, "Some error")
+		}
+		e = nodeservice.SaveNodeCommand(command, id)
+		if e != nil {
+			c.String(http.StatusBadRequest, "Something went wrong")
+		}
+		c.String(http.StatusAccepted, command)
 
 	})
 
-	router.Run(":" + port)
+	router.POST("/health", func(c *gin.Context) {
+		c.String(http.StatusOK, "I'm good, How are you?")
+	})
 
+	router.Run(":" + port)
 
 }

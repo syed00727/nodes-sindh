@@ -17,7 +17,6 @@ func GetNodeLastPingString(id int) string {
 	return repos.GetLastPing(id).GetStatusString()
 }
 
-
 func UpdateNodeStatusAndSendCommand(status string) string {
 	nodeObj := populateNodeObj(status)
 	err := repos.UpdateNodeStatus(nodeObj)
@@ -39,4 +38,12 @@ func populateNodeObj(statusStr string) node.Node {
 	}
 	return node.Node{Power: power, Ping: time.Now(), Status: status, Voltage: voltage, Current: current, Id: id}
 
+}
+
+func SaveNodeCommand(command string,id int) error {
+	e := repos.SaveNodeCommand(command, id)
+	if e != nil {
+		return  e
+	}
+	return  nil
 }

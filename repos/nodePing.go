@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/heroku/go-getting-started/models"
+	"time"
 )
 
 var db *sql.DB
@@ -21,6 +22,7 @@ func init() {
 	//connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, dbPort, dbSchema)
 
 	var err error
+	db, err = sql.Open("postgres", connStr)
 	db, err = sql.Open("postgres", os.Getenv("DATABASE_URL")+"?sslmode=require")
 	if err != nil {
 		panic(err)
@@ -50,6 +52,14 @@ func GetLastPing(id int) node.Node {
 
 func UpdateNodeStatus(n node.Node) error {
 	_, e := db.Exec("insert into node_pings(id, ping_time, status, voltage, current, power) values ($1, $2, $3, $4, $5, $6)", n.Id, n.Ping, n.Status, n.Voltage, n.Current, n.Power)
+	if e != nil {
+		return e
+	}
+	return nil
+}
+
+func SaveNodeCommand(command string, id int) error {
+	_, e := db.Exec("insert into node_commands(id,command_time,command,received) values ($1,$2,$3,$4)", id, time.Now(), command, 0)
 	if e != nil {
 		return e
 	}
