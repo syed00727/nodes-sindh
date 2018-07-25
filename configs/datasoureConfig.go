@@ -1,11 +1,10 @@
-package repos
+package configs
 
 import (
 	"database/sql"
+	_ "github.com/lib/pq"
 	"os"
 	"fmt"
-	_ "github.com/lib/pq"
-	"github.com/heroku/go-getting-started/models"
 )
 
 var db *sql.DB
@@ -36,25 +35,4 @@ func init() {
 	}
 
 	fmt.Println("you are connected to the database")
-}
-
-func GetLastPing(id int) node.Node {
-
-	ping := node.Node{}
-	row := db.QueryRow("select * from node_pings where id = $1 order by ping_time desc", id)
-	e := row.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power)
-	if e != nil {
-		return ping
-	}
-
-	return ping
-
-}
-
-func UpdateNodeStatus(n node.Node) error {
-	_, e := db.Exec("insert into node_pings(id, ping_time, status, voltage, current, power) values ($1, $2, $3, $4, $5, $6)", n.Id, n.Ping, n.Status, n.Voltage, n.Current, n.Power)
-	if e != nil {
-		return e
-	}
-	return nil
 }

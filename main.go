@@ -46,8 +46,8 @@ func main() {
 	//
 	router.POST("/node/status/:status", func(c *gin.Context) {
 		status := c.Param("status")
-		res := nodeservice.UpdateNodeStatusAndSendCommand(status)
-		if res == "OK" {
+		res,e := nodeservice.UpdateNodeStatusAndSendCommand(status)
+		if e != nil {
 			c.String(http.StatusOK, res)
 		} else {
 			c.String(http.StatusBadRequest, res)

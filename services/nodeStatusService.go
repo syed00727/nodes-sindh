@@ -17,13 +17,17 @@ func GetNodeLastPingString(id int) string {
 	return repos.GetLastPing(id).GetStatusString()
 }
 
-func UpdateNodeStatusAndSendCommand(status string) string {
+func UpdateNodeStatusAndSendCommand(status string) (string, error) {
 	nodeObj := populateNodeObj(status)
 	err := repos.UpdateNodeStatus(nodeObj)
 	if err != nil {
-		return "ILL"
+		return "ILL", err
 	}
-	return "OK"
+	command, e := repos.GetLatestCommand(nodeObj.Id)
+	if e == nil {
+		e = repos.SetReceived(nodeObj.Id)
+	}
+	return command.Command, e
 }
 
 func populateNodeObj(statusStr string) node.Node {
@@ -40,10 +44,10 @@ func populateNodeObj(statusStr string) node.Node {
 
 }
 
-func SaveNodeCommand(command string,id int) error {
+func SaveNodeCommand(command string, id int) error {
 	e := repos.SaveNodeCommand(command, id)
 	if e != nil {
-		return  e
+		return e
 	}
-	return  nil
+	return nil
 }
