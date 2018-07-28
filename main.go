@@ -34,6 +34,13 @@ func main() {
 	//
 	//})
 
+	router.LoadHTMLFiles("frontend/nodes-sindh/build/index.html")
+	router.Static("/static", "./static")
+
+	router.GET("/", func(context *gin.Context) {
+		context.HTML(http.StatusOK, "index.html", gin.H{})
+	})
+
 	router.GET("/node/status/:id", func(c *gin.Context) {
 
 		id, e := strconv.Atoi(c.Param("id"))
@@ -46,7 +53,7 @@ func main() {
 	//
 	router.POST("/node/status/:status", func(c *gin.Context) {
 		status := c.Param("status")
-		res,e := nodeservice.UpdateNodeStatusAndSendCommand(status)
+		res, e := nodeservice.UpdateNodeStatusAndSendCommand(status)
 		if e != nil {
 			c.String(http.StatusOK, res)
 		} else {
@@ -69,6 +76,24 @@ func main() {
 
 	router.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "I'm good, How are you?")
+	})
+
+	router.GET("api/nodes", func(c *gin.Context) {
+
+		ids, e := nodeservice.GetNodeIds()
+		if e != nil {
+			c.JSON(http.StatusInternalServerError, e)
+		}
+		c.JSON(http.StatusOK, ids)
+	})
+
+	router.GET("api/node/:id", func(c *gin.Context) {
+		id, e := strconv.Atoi(c.Param("id"))
+		if e != nil {
+			c.String(http.StatusBadRequest, "Something went wrong")
+		}
+		node, e := nodeservice.GetNode(id)
+		c.JSON(http.StatusOK, node)
 	})
 
 	router.Run(":" + port)

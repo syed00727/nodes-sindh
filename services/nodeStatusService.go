@@ -9,12 +9,13 @@ import (
 	"time"
 )
 
-func GetNode(id int) node.Node {
+func GetNode(id int) (node.Node, error) {
 	return repos.GetLastPing(id)
 }
 
 func GetNodeLastPingString(id int) string {
-	return repos.GetLastPing(id).GetStatusString()
+	ping, _ := repos.GetLastPing(id)
+	return ping.GetStatusString()
 }
 
 func UpdateNodeStatusAndSendCommand(status string) (string, error) {
@@ -51,3 +52,8 @@ func SaveNodeCommand(command string, id int) error {
 	}
 	return nil
 }
+
+func GetNodeIds() ([]int, error){
+	return  repos.GetNodeIds()
+}
+
