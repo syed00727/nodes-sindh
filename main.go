@@ -34,7 +34,7 @@ func main() {
 	//
 	//})
 
-	router.LoadHTMLFiles("./frontend/nodes-sindh/build/index.html")
+	router.LoadHTMLFiles("index.html")
 	router.Static("/static", "./static")
 
 	router.GET("/", func(context *gin.Context) {
