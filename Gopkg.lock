@@ -2,21 +2,41 @@
 
 
 [[projects]]
+  name = "github.com/gin-contrib/cors"
+  packages = ["."]
+  revision = "cf4846e6a636a76237a28d9286f163c132e841bc"
+  version = "v1.2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/gin-contrib/sse"
+  packages = ["."]
+  revision = "22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae"
+
+[[projects]]
   name = "github.com/gin-gonic/gin"
   packages = [
     ".",
     "binding",
     "render"
   ]
-  revision = "4cc2de6207f4128624cbdd16be30f64966c67c08"
+  revision = "d459835d2b077e44f7c9b453505ee29881d5d12d"
+  version = "v1.2"
 
 [[projects]]
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
+  version = "v1.1.0"
+
+[[projects]]
+  branch = "master"
   name = "github.com/heroku/x"
   packages = [
     "hmetrics",
     "hmetrics/onload"
   ]
-  revision = "705849e307dd75c91728463dea5bfd08ef493e64"
+  revision = "1de401e1ba0e5db3e5c15d2faeee777e0b685700"
 
 [[projects]]
   branch = "master"
@@ -28,34 +48,38 @@
   revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
 
 [[projects]]
-  name = "github.com/manucorporat/sse"
-  packages = ["."]
-  revision = "c142f0f1baea5cef7f98a8a6c222f6134368c1f5"
-
-[[projects]]
-  name = "github.com/mattn/go-colorable"
-  packages = ["."]
-  revision = "40e4aedc8fabf8c23e040057540867186712faa5"
-
-[[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
-  revision = "7fcbc72f853b92b5720db4a6b8482be612daef24"
+  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
+  version = "v0.0.3"
 
 [[projects]]
-  name = "golang.org/x/net"
-  packages = ["context"]
-  revision = "d9558e5c97f85372afee28cf2b6059d7d3818919"
+  name = "github.com/ugorji/go"
+  packages = ["codec"]
+  revision = "b4c50a2b199d93b13dc15e78929cfb23bfdf21ab"
+  version = "v1.1.1"
 
 [[projects]]
-  name = "gopkg.in/bluesuncorp/validator.v5"
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix"]
+  revision = "bd9dbc187b6e1dacfdd2722a87e83093c2d7bd6e"
+
+[[projects]]
+  name = "gopkg.in/go-playground/validator.v8"
   packages = ["."]
-  revision = "d5acf1dac43705f8bfbb71d878e290e2bed3950b"
-  version = "v5.12"
+  revision = "5f1438d3fca68893a817e4a66806cea46a9e4ebf"
+  version = "v8.18.2"
+
+[[projects]]
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3a1172e8eec84336e864bee77420e1b940ab0a8c748ce546a2be86ab064a4944"
+  inputs-digest = "c1403bde5590a681081d2c85ee0c690a7d54e3c2422d3c56d8c19c9c72c0c3e4"
   solver-name = "gps-cdcl"
   solver-version = 1

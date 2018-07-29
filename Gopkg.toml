@@ -35,3 +35,6 @@
 
 [metadata.heroku]
   root-package = "github.com/heroku/go-getting-started"
+[[constraint]]
+  name = "github.com/gin-contrib/cors"
+  version = "1.2.0"

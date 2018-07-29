@@ -95,7 +95,6 @@ func main() {
 		node, e := nodeservice.GetNode(id)
 		c.JSON(http.StatusOK, node)
 	})
-
 	router.Run(":" + port)
 
 }
