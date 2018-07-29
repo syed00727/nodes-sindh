@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchNodes } from '../actions/nodes';
+import { fetchNodes, fetchNodeDetail } from '../actions/nodes';
 
 class NodeList extends Component {
 
-   
+
+
+    constructor(props) {
+        super(props)
+
+        this.updateChoice = this.updateChoice.bind(this)
+    }
+
+    updateChoice = (event) => {
+        let nodeId = event.target.value;
+        this.props.fetchDetail(nodeId)
+    }
     render() {
-        const {nodes} = this.props;
-        if(nodes === null) {
+        const { nodes } = this.props;
+        if (nodes === null) {
             return <div>loading...</div>
         }
         return <div>
-            <select>
+            <select onChange={this.updateChoice}>
                 {
                     this.props.nodes.map(i => {
                         return <option key={`node_id_${i}`}>{i}</option>
@@ -30,7 +41,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshNodes: () => dispatch(fetchNodes())
+        refreshNodes: () => dispatch(fetchNodes()),
+        fetchDetail: id => dispatch(fetchNodeDetail(id))
     }
 }
 

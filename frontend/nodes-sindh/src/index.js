@@ -4,25 +4,26 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import logger from 'redux-logger';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
-import { fetchNodes } from './actions/nodes';
-import App from './App';
-import { fetchNodesEpics } from './epics/fetchNodeEpics';
-import './index.css';
-import { nodes } from './reducers/nodeReducer';
-import './scheduled/scheduledTasks';
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { fetchNodes } from './actions/nodes';
+import App from './App';
+import { fetchNodeDetailEpic, fetchNodesEpic } from './epics/nodeEpics';
+import './index.css';
+import { detail } from './reducers/detailReducer';
+import { nodes } from './reducers/nodeReducer';
+import './scheduled/scheduledTasks';
 
 
 const configureStore = (preLoadedState) => {
 
   // combine epics
-  const rootEpics = combineEpics(
-    fetchNodesEpics
+  const rootEpic = combineEpics(
+    fetchNodesEpic, fetchNodeDetailEpic
   );
   // combine reducers
   const rootReducer = combineReducers({
-    nodes
+    nodes, detail
   });
 
 
@@ -31,7 +32,7 @@ const configureStore = (preLoadedState) => {
     rootReducer,
     applyMiddleware(logger, epicMiddleWare)
   );
-  epicMiddleWare.run(rootEpics);
+  epicMiddleWare.run(rootEpic);
   return store;
 
 }
