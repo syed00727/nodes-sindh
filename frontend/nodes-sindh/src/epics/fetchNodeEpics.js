@@ -7,7 +7,7 @@ export const fetchNodesEpics = (action$, store) =>
     action$
         .pipe(ofType(FETCH_NODES),
             mergeMap(action =>
-                ajax.getJSON('http://nodes-sindh.herokuapp.com/api/nodes')
+                ajax.getJSON('https://nodes-sindh.herokuapp.com/api/nodes/')
                     .pipe(map(res =>
                         updateNodes(res)
                     )
