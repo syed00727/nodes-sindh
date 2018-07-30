@@ -56,5 +56,5 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
 renderApp()
 
 interval(3000)
-  .pipe(map(() => store.dispatch(fetchNodes())), take(2))
+  .pipe(map(() => store.dispatch(fetchNodes())))
   .subscribe();

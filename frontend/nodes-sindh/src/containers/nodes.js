@@ -8,8 +8,17 @@ class NodeList extends Component {
 
     constructor(props) {
         super(props)
-
+        this.state = {}
         this.updateChoice = this.updateChoice.bind(this)
+    }
+
+    componentDidUpdate = (prevProps) => {
+        const { nodes } = this.props;
+
+        if (nodes !== null && (prevProps.nodes === null || nodes.length !== prevProps.nodes.length)) {
+            this.props.fetchDetail(nodes[0])
+        }
+
     }
 
     updateChoice = (event) => {
@@ -24,7 +33,7 @@ class NodeList extends Component {
         return <div>
             <select onChange={this.updateChoice}>
                 {
-                    this.props.nodes.map(i => {
+                    this.props.nodes.sort().map(i => {
                         return <option key={`node_id_${i}`}>{i}</option>
                     })
                 }
