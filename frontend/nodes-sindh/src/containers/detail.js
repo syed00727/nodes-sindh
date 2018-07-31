@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { sendCommand } from '../actions/nodes'
 
 class Detail extends Component {
 
+    constructor(props) {
+        super(props)
+        this.toggleNodePower = this.toggleNodePower.bind(this)
+    }
+    toggleNodePower = () => {
+        console.log('received')
+        let powerBit = this.props.detail.Power === 1 ? 0 : 1
+        let command = `${powerBit}00000000`
+        this.props.sendCommand(command, this.props.detail.Id)
+    }
 
     render() {
         const { detail } = this.props;
@@ -17,6 +28,7 @@ class Detail extends Component {
                 <p>Current: {detail.Current}</p>
                 <p>Last Seen {detail.Ping}</p>
                 <p>Pin Status (Dec) : {detail.Status}</p>
+                <button onClick={this.toggleNodePower}>Toggle Power</button>
             </div>
         </div>
     }
@@ -30,7 +42,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        sendCommand: (command, node) => dispatch(sendCommand(command, node))
     }
 }
 

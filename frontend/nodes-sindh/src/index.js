@@ -8,7 +8,7 @@ import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { fetchNodes } from './actions/nodes';
 import App from './App';
-import { fetchNodeDetailEpic, fetchNodesEpic } from './epics/nodeEpics';
+import { fetchNodeDetailEpic, fetchNodesEpic, sendCommandEpic } from './epics/nodeEpics';
 import './index.css';
 import { detail } from './reducers/detailReducer';
 import { nodes } from './reducers/nodeReducer';
@@ -19,7 +19,7 @@ const configureStore = (preLoadedState) => {
 
   // combine epics
   const rootEpic = combineEpics(
-    fetchNodesEpic, fetchNodeDetailEpic
+    fetchNodesEpic, fetchNodeDetailEpic, sendCommandEpic
   );
   // combine reducers
   const rootReducer = combineReducers({
@@ -56,5 +56,10 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
 renderApp()
 
 interval(3000)
-  .pipe(map(() => store.dispatch(fetchNodes())))
+  .pipe(
+    map(
+      () => store.dispatch(fetchNodes())
+    )
+    , take(2)
+  )
   .subscribe();
