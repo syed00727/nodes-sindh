@@ -18,6 +18,8 @@ class Detail extends Component {
         this.props.sendCommand(command, this.props.detail.Id)
     }
 
+    
+
     render() {
         const { detail } = this.props;
         if (detail === null) {

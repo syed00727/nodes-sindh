@@ -1,5 +1,5 @@
 import { mapTo, mergeMap, map } from "rxjs/operators";
-import { updateNodes, FETCH_NODES, FETCH_NODE_DETAIL, updateNodeDetail, commandResponse, SEND_COMMAND } from "../actions/nodes";
+import { updateNodes, FETCH_NODES, FETCH_NODE_DETAIL, updateNodeDetail, commandResponse, SEND_COMMAND, fetchNodeDetail } from "../actions/nodes";
 import { ofType } from "redux-observable";
 import { ajax } from 'rxjs/ajax'
 
@@ -36,7 +36,7 @@ export const sendCommandEpic = action$ =>
                 `${HOST}/node/command/${action.payload.command}?id=${action.payload.id}`)
                 .pipe(map(res =>
                     commandResponse(res)
-                )
+                ), map(() => fetchNodeDetail(action.payload.id))
                 )
     )
     )
