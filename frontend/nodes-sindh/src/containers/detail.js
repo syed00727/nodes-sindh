@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sendCommand } from '../actions/nodes'
+import { sendCommand, fetchNodeDetail } from '../actions/nodes'
+import { interval } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 class Detail extends Component {
 
     constructor(props) {
         super(props)
         this.toggleNodePower = this.toggleNodePower.bind(this)
+        this.state = {}
     }
     toggleNodePower = () => {
         console.log('received')
@@ -42,7 +45,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        sendCommand: (command, node) => dispatch(sendCommand(command, node))
+        sendCommand: (command, node) => dispatch(sendCommand(command, node)),
+        fetchDetail: id => dispatch(fetchNodeDetail(id))
+
     }
 }
 

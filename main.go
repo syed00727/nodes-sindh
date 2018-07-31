@@ -55,9 +55,9 @@ func main() {
 		status := c.Param("status")
 		res, e := nodeservice.UpdateNodeStatusAndSendCommand(status)
 		if e != nil {
-			c.String(http.StatusOK, res)
-		} else {
 			c.String(http.StatusBadRequest, res)
+		} else {
+			c.String(http.StatusAccepted, res)
 		}
 	})
 	router.POST("/node/command/:action", func(c *gin.Context) {
