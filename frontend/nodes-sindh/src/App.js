@@ -3,21 +3,27 @@ import logo from './logo.svg';
 import './App.css';
 import NodeListContainer from './containers/nodes';
 import DetailContainer from './containers/detail';
+import { withStyles } from '@material-ui/core';
+
+const styles = {
+  detail: {
+    margin: '3px',
+    padding: '3px'
+  }
+}
 
 class App extends Component {
   render() {
+    const { classes } = this.props;
     return (
       <div className="App">
-        <div className="App-header">
-          <h2>Welcome to my App. No styling has been done yet. This is the Raw structure</h2>
-        </div>
-        <div className="App-intro">
-        <NodeListContainer/>
-        <DetailContainer/>
+        <div >
+          <NodeListContainer />
+          <DetailContainer className={classes.detail} />
         </div>
       </div>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);

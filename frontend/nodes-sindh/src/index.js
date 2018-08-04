@@ -47,7 +47,8 @@ const renderApp = () => render(
   document.getElementById('root')
 );
 
-if (process.env.NODE_ENV !== 'production' && module.hot) {
+if (module.hot) {
+  console.log(module)
   module.hot.accept('./App', () => {
     renderApp()
   })
