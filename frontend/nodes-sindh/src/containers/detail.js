@@ -1,4 +1,4 @@
-import { CardContent, Typography, withStyles, CircularProgress } from '@material-ui/core';
+import { CardContent, Typography, withStyles, CircularProgress, Switch } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -13,25 +13,28 @@ dayjs.extend(relativeTime)
 const styles = {
     card: {
         minWidth: 275,
-        width: 300
+        width: 300,
+        padding: 10
     },
     dot: {
-        height: '15px',
-        width: '15px',
+        height: 15,
+        width: 15,
         borderRadius: '50%',
         display: 'inline-block'
     },
     cardheader: {
         display: 'grid',
-        gridTemplateColumns: '40% 20%',
-        alignItems: 'center',
-        gridGap: 5
+        gridTemplateColumns: '10% 40% 50%',
+        alignItems: 'center'
     },
     node: {
         placeSelf: 'start center'
     },
     cardContent: {
         textAlign: 'center'
+    },
+    switch: {
+        placeSelf: 'center end'
     }
 
 };
@@ -66,10 +69,11 @@ class Detail extends Component {
             <Card className={classes.card}>
                 <div >
                     <div className={classes.cardheader}>
+                        <span style={{ ...styles.dot, backgroundColor: powerStatus }} ></span>
                         <Typography variant="headline" component="h2">
                             Node {detail.Id}
                         </Typography>
-                        <span style={{ ...styles.dot, backgroundColor: powerStatus }} ></span>
+                        <Switch className={classes.switch} checked={detail.Power} onChange={this.toggleNodePower} color="primary" />
                     </div>
                     <Typography color="textSecondary">
                         Last Ping {date.fromNow()}
@@ -82,7 +86,7 @@ class Detail extends Component {
                     <p>Current: {Math.round(detail.Current * 100) / 100} A</p>
                     <PinStatus pinStatus={detail.Status} />
                 </CardContent>
-                <button onClick={this.toggleNodePower}>{detail.Power ? 'OFF' : 'ON'}</button>
+                {/* <button onClick={this.toggleNodePower}>{detail.Power ? 'OFF' : 'ON'}</button> */}
             </Card>
         </div>
     }
