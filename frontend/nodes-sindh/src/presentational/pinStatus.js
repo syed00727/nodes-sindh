@@ -26,8 +26,8 @@ class PinStatus extends Component {
             <div>
                 {
                     pinStatus.map(
-                        status => {
-                            return <span style={{ ...dot, backgroundColor: fill(status) }}> </span>
+                        (status,i) => {
+                            return <span style={{ ...dot, backgroundColor: fill(status) }} key={`status-${i}`}> </span>
                         }
                     )
                 }

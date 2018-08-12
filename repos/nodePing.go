@@ -6,12 +6,12 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/heroku/go-getting-started/models"
+	"log"
 )
 
 var db *sql.DB
 
 func init() {
-	//
 	var err error
 	if os.Getenv("PROFILE") == "LOCAL" {
 		username := os.Getenv("DB_USR")
@@ -35,7 +35,7 @@ func init() {
 		panic(err)
 	}
 
-	fmt.Println("you are connected to the database")
+	log.Println("Connection to Database successful")
 }
 
 func GetLastPing(id int) (node.Node, error) {
@@ -56,13 +56,13 @@ func UpdateNodeStatus(n node.Node) error {
 func GetNodeIds() ([]int, error) {
 	rows, e := db.Query("select distinct(id) from node_pings")
 	nodes := make([]int, 0)
-	var node int
+	var Id int
 	for rows.Next() {
-		e := rows.Scan(&node)
+		e := rows.Scan(&Id)
 		if e != nil {
 			return nodes, e
 		}
-		nodes = append(nodes, node)
+		nodes = append(nodes, Id)
 	}
 
 	return nodes, e
@@ -73,17 +73,17 @@ func GetLastPingForAllNodes() ([]node.Node, error) {
 
 	pingList := make([]node.Node, 0)
 	rows, e := db.Query("with ranked_messages as " +
-		"(select id,ping_time,status,voltage,current, rank() over (partition by id order by ping_time desc) as rn " +
+		"(select id,ping_time,status,voltage,current, power ,rank() over (partition by id order by ping_time desc) as rn " +
 		"from node_pings) " +
-		"select * from ranked_messages where rn = 1")
+		"select id,ping_time,status,current,power from ranked_messages where rn = 1")
 	if e != nil {
 		return pingList, e
 	}
-	var ping node.Node
+	var latestPing node.Node
 	for rows.Next() {
-		e := rows.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power)
+		e := rows.Scan(&latestPing.Id, &latestPing.Ping, &latestPing.Status, &latestPing.Voltage, &latestPing.Current, &latestPing.Power)
 		if e == nil {
-			pingList = append(pingList, ping)
+			pingList = append(pingList, latestPing)
 		} else {
 			break
 		}

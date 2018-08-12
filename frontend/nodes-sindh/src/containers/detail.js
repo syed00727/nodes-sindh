@@ -11,6 +11,10 @@ import PinStatus from '../presentational/pinStatus'
 
 dayjs.extend(relativeTime)
 const styles = {
+    detail: {
+        margin: 1.5,
+        padding: 3
+    },
     card: {
         minWidth: 275,
         width: 300,
@@ -49,7 +53,6 @@ class Detail extends Component {
         this.state = {}
     }
     toggleNodePower = () => {
-        console.log('received')
         let powerBit = this.props.detail.Power === 1 ? 0 : 1
         let command = `${powerBit}00000000`
         this.props.sendCommand(command, this.props.detail.Id)
@@ -66,7 +69,7 @@ class Detail extends Component {
         }
         const date = dayjs(detail.Ping)
         const powerStatus = detail.Power === 0 ? red[500] : green[500]
-        return <div>
+        return <div className={classes.detail}>
             <Card className={classes.card}>
                 <div >
                     <div className={classes.cardheader}>
@@ -87,7 +90,6 @@ class Detail extends Component {
                     <p>Current: {Math.round(detail.Current * 100) / 100} A</p>
                     <PinStatus pinStatus={detail.Status} />
                 </CardContent>
-                {/* <button onClick={this.toggleNodePower}>{detail.Power ? 'OFF' : 'ON'}</button> */}
             </Card>
         </div>
     }
@@ -95,7 +97,7 @@ class Detail extends Component {
 
 const mapStateToProps = state => {
     return {
-        detail: state.detail
+        
     }
 }
 
@@ -108,7 +110,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const DetailContainer = connect(
-    mapStateToProps, mapDispatchToProps
+    mapStateToProps , mapDispatchToProps
 )(Detail)
 
 export default withStyles(styles)(DetailContainer)

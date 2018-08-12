@@ -1,16 +1,9 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import NodeListContainer from './containers/nodes';
-import DetailContainer from './containers/detail';
 import { withStyles } from '@material-ui/core';
+import React, { Component } from 'react';
+import './App.css';
+import DetailGrid from './containers/detailGrid';
+import NodeListContainer from './containers/nodes';
 
-const styles = {
-  detail: {
-    margin: '3px',
-    padding: '3px'
-  }
-}
 
 class App extends Component {
   render() {
@@ -19,11 +12,11 @@ class App extends Component {
       <div className="App">
         <div >
           <NodeListContainer />
-          <DetailContainer className={classes.detail} />
+          <DetailGrid />
         </div>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(App);
+export default App;
