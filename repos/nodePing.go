@@ -75,7 +75,7 @@ func GetLastPingForAllNodes() ([]node.Node, error) {
 	rows, e := db.Query("with ranked_messages as " +
 		"(select id,ping_time,status,voltage,current, power ,rank() over (partition by id order by ping_time desc) as rn " +
 		"from node_pings) " +
-		"select id,ping_time,status,current,power from ranked_messages where rn = 1")
+		"select id,ping_time,status,voltage,current,power from ranked_messages where rn = 1")
 	if e != nil {
 		return pingList, e
 	}
