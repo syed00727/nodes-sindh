@@ -33,7 +33,7 @@ export const sendCommandEpic = action$ =>
     action$.pipe(ofType(SEND_COMMAND), mergeMap(
         action =>
             ajax.post(
-                `${HOST}/node/command/${action.payload.command}?id=${action.payload.id}`)
+                `${HOST}/api/node/command/${action.payload.command}?id=${action.payload.id}`)
                 .pipe(map(res =>
                     commandResponse(res)
                 ), map(() => fetchNodeDetail(action.payload.id))

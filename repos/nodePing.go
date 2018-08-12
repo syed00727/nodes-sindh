@@ -13,7 +13,7 @@ var db *sql.DB
 func init() {
 	//
 	var err error
-	if (os.Getenv("PROFILE") == "LOCAL") {
+	if os.Getenv("PROFILE") == "LOCAL" {
 		username := os.Getenv("DB_USR")
 		password := os.Getenv("DB_PWD")
 		host := os.Getenv("DB_HOST")
@@ -66,5 +66,29 @@ func GetNodeIds() ([]int, error) {
 	}
 
 	return nodes, e
+
+}
+
+func GetLastPingForAllNodes() ([]node.Node, error) {
+
+	pingList := make([]node.Node, 0)
+	rows, e := db.Query("with ranked_messages as " +
+		"(select id,ping_time,status,voltage,current, rank() over (partition by id order by ping_time desc) as rn " +
+		"from node_pings) " +
+		"select * from ranked_messages where rn = 1")
+	if e != nil {
+		return pingList, e
+	}
+	var ping node.Node
+	for rows.Next() {
+		e := rows.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power)
+		if e == nil {
+			pingList = append(pingList, ping)
+		} else {
+			break
+		}
+
+	}
+	return pingList, e
 
 }

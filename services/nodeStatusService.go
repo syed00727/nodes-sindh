@@ -18,15 +18,22 @@ func GetNodeLastPingString(id int) string {
 	return ping.GetStatusString()
 }
 
-func UpdateNodeStatusAndSendCommand(status string) (string, error) {
+func UpdateNodeStatus(status string) (*node.Node, error) {
 	nodeObj := populateNodeObj(status)
 	err := repos.UpdateNodeStatus(nodeObj)
 	if err != nil {
-		return "ILL", err
+		return nil, err
 	}
-	command, e := repos.GetLatestCommand(nodeObj.Id)
+	return &nodeObj, nil
+}
+
+func GetCommandForNode(nodeId int) (string, error) {
+	command, e := repos.GetLatestCommand(nodeId)
 	if e == nil {
-		e = repos.SetReceived(nodeObj.Id)
+		e = repos.SetReceived(nodeId)
+	}
+	if command.Command == "" {
+		return "", nil
 	}
 	return command.Command, e
 }
@@ -53,7 +60,10 @@ func SaveNodeCommand(command string, id int) error {
 	return nil
 }
 
-func GetNodeIds() ([]int, error){
-	return  repos.GetNodeIds()
+func GetNodeIds() ([]int, error) {
+	return repos.GetNodeIds()
 }
 
+func GetLastPingsForAllNodes() ([]node.Node, error) {
+	return repos.GetLastPingForAllNodes()
+}

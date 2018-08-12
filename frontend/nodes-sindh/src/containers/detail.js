@@ -21,6 +21,7 @@ const styles = {
         width: 15,
         borderRadius: '50%',
         display: 'inline-block'
+
     },
     cardheader: {
         display: 'grid',
