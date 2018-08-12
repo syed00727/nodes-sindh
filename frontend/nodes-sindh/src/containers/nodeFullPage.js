@@ -5,16 +5,20 @@ import { CircularProgress } from '@material-ui/core';
 
 class NodeFullPage extends Component {
 
-    componentDidUpdate(){
+
+    componentDidMount() {
         console.log('updated')
+        this.props.fetchNodeHistory(this.props.match.params.nodeId)
     }
     render() {
-        if (this.props.history === null) {
-            return <CircularProgress />
-        }
+        // if (this.props.history === null) {
+        //     return <CircularProgress />
+        // }
+        console.log(this.props)
         return <div>
-            <span> Total records {this.props.history.size}</span>
+            <span> Total records {this.props.history !== null ? this.props.history.length : 'empty'}</span>
             This is node {this.props.match.params.nodeId} detail
+            <button onClick={() => this.props.fetchNodeHistory(this.props.match.params.nodeId)}> Fetch and Check </button>
         </div>
     }
 }

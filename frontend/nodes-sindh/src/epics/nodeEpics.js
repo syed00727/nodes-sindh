@@ -51,14 +51,10 @@ export const fetchAllNodeDetailsEpic = action$ =>
     )
 
 export const fetchNodeHistoryEpic = action$ =>
-    action$.pipe(ofType(FETCH_NODE_HISTORY, mergeMap(
+    action$.pipe(ofType(FETCH_NODE_HISTORY), mergeMap(
         action => ajax.getJSON(
-            `${HOST}/api/node/history/${action.payload}`
-        ).pipe(
-            map(
-                res => updateNodeHistory(action.payload, res)
+            `${HOST}/api/node/history/${action.payload}`).pipe(
+                map(res => updateNodeHistory(action.payload, res))
             )
-        )
-    )
     )
     )
