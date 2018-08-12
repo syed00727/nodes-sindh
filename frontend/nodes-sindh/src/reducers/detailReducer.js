@@ -1,5 +1,5 @@
-import { UPDATE_NODE_DETAIL, UPDATE_ALL_NODE_DETAILS } from "../actions/nodes";
-import Immutable, { Map, OrderedMap } from 'immutable'
+import { Map } from 'immutable';
+import { UPDATE_ALL_NODE_DETAILS, UPDATE_NODE_DETAIL } from "../actions/nodes";
 
 export const detail = (state = Map(), action) => {
     switch (action.type) {

@@ -6,24 +6,25 @@ import logger from 'redux-logger';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { fetchNodes, fetchAllNodeDetails } from './actions/nodes';
+import { fetchAllNodeDetails, fetchNodes, updateNodeDetail } from './actions/nodes';
 import App from './App';
-import { fetchNodeDetailEpic, fetchNodesEpic, sendCommandEpic, fetchAllNodeDetailsEpic } from './epics/nodeEpics';
+import { fetchAllNodeDetailsEpic, fetchNodeDetailEpic, fetchNodesEpic, sendCommandEpic, fetchNodeHistoryEpic } from './epics/nodeEpics';
 import './index.css';
 import { detail } from './reducers/detailReducer';
 import { nodes } from './reducers/nodeReducer';
-import './scheduled/scheduledTasks';
-
+import { history } from './reducers/historyReducer'
+import { ws } from './websocket'
+import { BrowserRouter } from 'react-router-dom'
 
 const configureStore = (preLoadedState) => {
 
   // combine epics
   const rootEpic = combineEpics(
-    fetchNodesEpic, fetchNodeDetailEpic, sendCommandEpic, fetchAllNodeDetailsEpic
+    fetchNodesEpic, fetchNodeDetailEpic, sendCommandEpic, fetchAllNodeDetailsEpic, fetchNodeHistoryEpic
   );
   // combine reducers
   const rootReducer = combineReducers({
-    nodes, detail,
+    nodes, detail, history
   });
 
 
@@ -42,13 +43,14 @@ let store = configureStore();
 
 const renderApp = () => render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
 
 if (module.hot) {
-  console.log(module)
   module.hot.accept('./App', () => {
     renderApp()
   })
@@ -61,7 +63,7 @@ interval(3000)
     map(
       () => store.dispatch(fetchNodes())
     )
-    , take(2)
+    , take(1)
   )
   .subscribe();
 
@@ -71,4 +73,8 @@ interval(3000)
       () => store.dispatch(fetchAllNodeDetails())
     )
     , take(1)
-  ).subscribe();  
+  ).subscribe();
+
+ws.onmessage = webSocketRes => {
+  store.dispatch(updateNodeDetail(JSON.parse(webSocketRes.data)))
+} 

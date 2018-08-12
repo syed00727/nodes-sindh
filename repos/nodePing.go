@@ -92,3 +92,23 @@ func GetLastPingForAllNodes() ([]node.Node, error) {
 	return pingList, e
 
 }
+
+func GetLastNPingsForANode(id int, n int) ([]node.Node, error) {
+	pingList := make([]node.Node, 0)
+	rows, e := db.Query("select * from node_pings where id = $1 order by ping_time desc limit $2", id, n)
+	if e != nil {
+		return pingList, e
+	}
+	var ping node.Node
+	for rows.Next() {
+		e := rows.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power)
+		if e == nil {
+			pingList = append(pingList, ping)
+		} else {
+			break
+		}
+
+	}
+	return pingList, e
+
+}

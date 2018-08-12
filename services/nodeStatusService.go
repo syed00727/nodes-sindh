@@ -67,3 +67,7 @@ func GetNodeIds() ([]int, error) {
 func GetLastPingsForAllNodes() ([]node.Node, error) {
 	return repos.GetLastPingForAllNodes()
 }
+
+func GetLastNPingsForANode(id int, n int) ([]node.Node, error) {
+	return repos.GetLastNPingsForANode(id,n)
+}

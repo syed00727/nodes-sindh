@@ -54,3 +54,19 @@ func GetLastPingsForAllNodes(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, lastPingsForAllNodes)
 }
+
+func GetLastNPingsForANode(c *gin.Context) {
+	id, eP := strconv.Atoi(c.Param("id"))
+	pageSize, eQ := strconv.Atoi(c.Query("pageSize"))
+	if eP != nil  {
+		c.JSON(http.StatusBadRequest, nil)
+	}
+	if eQ != nil {
+		pageSize = 30
+	}
+	nodes, e := nodeservice.GetLastNPingsForANode(id, pageSize)
+	if e != nil {
+		c.JSON(http.StatusInternalServerError,nil)
+	}
+	c.JSON(http.StatusOK,nodes)
+}

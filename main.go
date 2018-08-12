@@ -34,12 +34,14 @@ func main() {
 	router.POST("/node/status/:status", module.PostNodeStatus)
 
 	//web facing APIs
-	router.POST("/api/node/command/:action", web.SendCommand)
-	router.GET("api/nodes", web.GetNodeIds)
-	router.GET("api/node/:id", web.GetNodeStatus)
-	router.GET("api/nodes/all", web.GetLastPingsForAllNodes)
-	router.GET("/node/status/:id", web.GetStatusString)
-
+	api:= router.Group("/api")
+	{
+		api.POST("/node/command/:action", web.SendCommand)
+		api.GET("/node/history/:id", web.GetLastNPingsForANode)
+		api.GET("/node/status/:id", web.GetNodeStatus)
+		api.GET("/nodes", web.GetNodeIds)
+		api.GET("/nodes/all", web.GetLastPingsForAllNodes)
+	}
 	//web socket handshake
 	router.GET("ws", webSocket.WsHandshake)
 
