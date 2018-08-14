@@ -38,9 +38,9 @@ func init() {
 	log.Println("Connection to Database successful")
 }
 
-func GetLastPing(id int) (node.Node, error) {
+func GetLastPing(id int) (models.Node, error) {
 
-	ping := node.Node{}
+	ping := models.Node{}
 	row := db.QueryRow("select * from node_pings where id = $1 order by ping_time desc", id)
 	e := row.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power)
 
@@ -48,7 +48,7 @@ func GetLastPing(id int) (node.Node, error) {
 
 }
 
-func UpdateNodeStatus(n node.Node) error {
+func UpdateNodeStatus(n models.Node) error {
 	_, e := db.Exec("insert into node_pings(id, ping_time, status, voltage, current, power) values ($1, $2, $3, $4, $5, $6)", n.Id, n.Ping, n.Status, n.Voltage, n.Current, n.Power)
 	return e
 }
@@ -69,9 +69,9 @@ func GetNodeIds() ([]int, error) {
 
 }
 
-func GetLastPingForAllNodes() ([]node.Node, error) {
+func GetLastPingForAllNodes() ([]models.Node, error) {
 
-	pingList := make([]node.Node, 0)
+	pingList := make([]models.Node, 0)
 	rows, e := db.Query("with ranked_messages as " +
 		"(select id,ping_time,status,voltage,current, power ,rank() over (partition by id order by ping_time desc) as rn " +
 		"from node_pings) " +
@@ -79,7 +79,7 @@ func GetLastPingForAllNodes() ([]node.Node, error) {
 	if e != nil {
 		return pingList, e
 	}
-	var latestPing node.Node
+	var latestPing models.Node
 	for rows.Next() {
 		e := rows.Scan(&latestPing.Id, &latestPing.Ping, &latestPing.Status, &latestPing.Voltage, &latestPing.Current, &latestPing.Power)
 		if e == nil {
@@ -93,13 +93,13 @@ func GetLastPingForAllNodes() ([]node.Node, error) {
 
 }
 
-func GetLastNPingsForANode(id int, n int) ([]node.Node, error) {
-	pingList := make([]node.Node, 0)
+func GetLastNPingsForANode(id int, n int) ([]models.Node, error) {
+	pingList := make([]models.Node, 0)
 	rows, e := db.Query("select * from node_pings where id = $1 order by ping_time desc limit $2", id, n)
 	if e != nil {
 		return pingList, e
 	}
-	var ping node.Node
+	var ping models.Node
 	for rows.Next() {
 		e := rows.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power)
 		if e == nil {

@@ -36,6 +36,8 @@ func main() {
 	//web facing APIs
 	api:= router.Group("/api")
 	{
+		api.GET("node/voltage/limit/:id", web.GetVoltageLimit)
+		api.POST("node/voltage/limit/:id", web.SetVoltageLimit)
 		api.POST("/node/command/:action", web.SendCommand)
 		api.GET("/node/history/:id", web.GetLastNPingsForANode)
 		api.GET("/node/status/:id", web.GetNodeStatus)

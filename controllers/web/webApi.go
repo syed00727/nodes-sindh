@@ -5,22 +5,26 @@ import (
 	"net/http"
 	"github.com/heroku/go-getting-started/services"
 	"github.com/gin-gonic/gin"
+	"encoding/json"
+	"github.com/heroku/go-getting-started/models"
 )
 
 func GetNodeStatus(c *gin.Context) {
 	id, e := strconv.Atoi(c.Param("id"))
 	if e != nil {
 		c.String(http.StatusBadRequest, "Something went wrong")
+		return
 	}
-	node, e := nodeservice.GetNode(id)
+	node, e := services.GetNode(id)
 	c.JSON(http.StatusOK, node)
 }
 
 func GetNodeIds(c *gin.Context) {
 
-	ids, e := nodeservice.GetNodeIds()
+	ids, e := services.GetNodeIds()
 	if e != nil {
 		c.JSON(http.StatusInternalServerError, e)
+		return
 	}
 	c.JSON(http.StatusOK, ids)
 }
@@ -30,10 +34,12 @@ func SendCommand(c *gin.Context) {
 	id, e := strconv.Atoi(c.Query("id"))
 	if e != nil {
 		c.String(http.StatusBadRequest, "Some error")
+		return
 	}
-	e = nodeservice.SaveNodeCommand(command, id)
+	e = services.SaveNodeCommand(command, id)
 	if e != nil {
 		c.String(http.StatusBadRequest, "Something went wrong")
+		return
 	}
 	c.String(http.StatusAccepted, command)
 
@@ -43,14 +49,16 @@ func GetStatusString(c *gin.Context) {
 	id, e := strconv.Atoi(c.Param("id"))
 	if e != nil {
 		c.String(http.StatusBadRequest, "Something went wrong")
+		return
 	}
-	c.String(http.StatusOK, nodeservice.GetNodeLastPingString(id))
+	c.String(http.StatusOK, services.GetNodeLastPingString(id))
 }
 
 func GetLastPingsForAllNodes(c *gin.Context) {
-	lastPingsForAllNodes, e := nodeservice.GetLastPingsForAllNodes()
+	lastPingsForAllNodes, e := services.GetLastPingsForAllNodes()
 	if e != nil {
 		c.JSON(http.StatusInternalServerError, nil)
+		return
 	}
 	c.JSON(http.StatusOK, lastPingsForAllNodes)
 }
@@ -58,15 +66,50 @@ func GetLastPingsForAllNodes(c *gin.Context) {
 func GetLastNPingsForANode(c *gin.Context) {
 	id, eP := strconv.Atoi(c.Param("id"))
 	pageSize, eQ := strconv.Atoi(c.Query("pageSize"))
-	if eP != nil  {
+	if eP != nil {
 		c.JSON(http.StatusBadRequest, nil)
+		return
 	}
 	if eQ != nil {
 		pageSize = 30
 	}
-	nodes, e := nodeservice.GetLastNPingsForANode(id, pageSize)
+	nodes, e := services.GetLastNPingsForANode(id, pageSize)
 	if e != nil {
-		c.JSON(http.StatusInternalServerError,nil)
+		c.JSON(http.StatusInternalServerError, nil)
+		return
 	}
-	c.JSON(http.StatusOK,nodes)
+	c.JSON(http.StatusOK, nodes)
+}
+
+func GetVoltageLimit(c *gin.Context) {
+	id, eP := strconv.Atoi(c.Param("id"))
+	if eP != nil {
+		c.JSON(http.StatusBadRequest, nil)
+		return
+	}
+	limit, e := services.GetVoltageLimit(id)
+	if e != nil {
+		c.JSON(http.StatusInternalServerError, nil)
+		return
+	}
+
+	c.JSON(http.StatusOK, models.VoltageLimit{limit})
+}
+
+func SetVoltageLimit(c *gin.Context) {
+
+	id, eP := strconv.Atoi(c.Param("id"))
+	if eP != nil {
+		c.JSON(http.StatusBadRequest, nil)
+		return
+	}
+	limit := models.VoltageLimit{}
+	json.NewDecoder(c.Request.Body).Decode(&limit)
+	e := services.SetVoltageLimit(id, limit.Limit)
+	if e != nil {
+		c.JSON(http.StatusInternalServerError, nil)
+		return
+	}
+	c.JSON(http.StatusOK, nil)
+
 }

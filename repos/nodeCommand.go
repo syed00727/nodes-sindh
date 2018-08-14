@@ -18,8 +18,8 @@ func SetReceived(id int) error {
 	return e
 }
 
-func GetLatestCommand(id int) (node.Command, error) {
-	command := node.Command{}
+func GetLatestCommand(id int) (models.Command, error) {
+	command := models.Command{}
 	row := db.QueryRow("select * from node_commands where id = $1 and received = 0 order by command_time desc limit 1", id)
 	e := row.Scan(&command.Id, &command.CommandTime, &command.Command, &command.Received)
 	return command, e

@@ -9,12 +9,12 @@ import (
 
 func PostNodeStatus(c *gin.Context) {
 	status := c.Param("status")
-	node, e := nodeservice.UpdateNodeStatus(status)
+	node, e := services.UpdateNodeStatus(status)
 	if e != nil {
 		c.String(http.StatusBadRequest, "")
 	} else {
 
-		command, e := nodeservice.GetCommandForNode((*node).Id)
+		command, e := services.GetCommandForNode((*node).Id)
 		if e != nil {
 			c.String(http.StatusInternalServerError, command)
 		}
