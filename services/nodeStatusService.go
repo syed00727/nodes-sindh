@@ -29,11 +29,8 @@ func UpdateNodeStatus(status string) (*node.Node, error) {
 
 func GetCommandForNode(nodeId int) (string, error) {
 	command, e := repos.GetLatestCommand(nodeId)
-	if e == nil {
+	if e == nil && command.Command != "" {
 		e = repos.SetReceived(nodeId)
-	}
-	if command.Command == "" {
-		return "", nil
 	}
 	return command.Command, e
 }
