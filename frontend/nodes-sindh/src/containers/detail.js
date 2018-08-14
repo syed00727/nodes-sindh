@@ -17,7 +17,7 @@ const Voltage = (props) => {
     let isAboveLimit = detail.VoltageLimit.Valid && detail.VoltageLimit.Float64 < detail.Voltage
     return <span>
         Voltage: <span style={{ color: isAboveLimit ? red[900] : green[900] }} > {Math.round(detail.Voltage * 100) / 100} V </span>
-        <span style={{ fontSize: 10, color: grey[800] }} > {detail.VoltageLimit.Valid ? `limit: ${(Math.round(detail.VoltageLimit.Float64 * 100) / 100)} V` : ``}
+        <span style={{ fontSize: 11, color: grey[800] }} > {detail.VoltageLimit.Valid ? `limit: ${(Math.round(detail.VoltageLimit.Float64 * 100) / 100)} V` : ``}
         </span>
     </span>
 }

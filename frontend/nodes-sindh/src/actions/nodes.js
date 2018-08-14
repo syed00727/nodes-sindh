@@ -8,6 +8,7 @@ export const FETCH_ALL_NODE_DETAILS = 'FETCH_ALL_NODE_DETAILS'
 export const UPDATE_ALL_NODE_DETAILS = 'UPDATE_ALL_NODE_DETAILS'
 export const FETCH_NODE_HISTORY = 'FETCH_NODE_HISTORY'
 export const UPDATE_NODE_HISTORY = 'UPDATE_NODE_HISTORY'
+export const ADD_TO_HISTORY = 'ADD_TO_HISTORY'
 
 export const fetchNodes = () => ({ type: FETCH_NODES })
 export const updateNodes = (nodes = null) => ({ type: UPDATE_NODES, payload: nodes })
@@ -19,4 +20,5 @@ export const fetchAllNodeDetails = () => ({ type: FETCH_ALL_NODE_DETAILS })
 export const updateAllNodeDetails = response => ({ type: UPDATE_ALL_NODE_DETAILS, payload: response })
 export const fetchNodeHistory = id => ({ type: FETCH_NODE_HISTORY, payload: id })
 export const updateNodeHistory = (id, history) => ({ type: UPDATE_NODE_HISTORY, payload: { id, history } })
+export const addToHistory = pingData => ({ type: ADD_TO_HISTORY, payload: pingData })
 

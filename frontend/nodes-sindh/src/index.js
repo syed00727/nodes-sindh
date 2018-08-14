@@ -8,7 +8,7 @@ import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { fetchAllNodeDetails, fetchNodes, updateNodeDetail } from './actions/nodes';
 import App from './App';
-import { fetchAllNodeDetailsEpic, fetchNodeDetailEpic, fetchNodesEpic, sendCommandEpic, fetchNodeHistoryEpic } from './epics/nodeEpics';
+import { fetchAllNodeDetailsEpic, fetchNodeDetailEpic, fetchNodesEpic, sendCommandEpic, fetchNodeHistoryEpic, updateNodeHistoryEpic } from './epics/nodeEpics';
 import './index.css';
 import { detail } from './reducers/detailReducer';
 import { nodes } from './reducers/nodeReducer';
@@ -20,7 +20,7 @@ const configureStore = (preLoadedState) => {
 
   // combine epics
   const rootEpic = combineEpics(
-    fetchNodesEpic, fetchNodeDetailEpic, sendCommandEpic, fetchAllNodeDetailsEpic, fetchNodeHistoryEpic
+    fetchNodesEpic, fetchNodeDetailEpic, sendCommandEpic, fetchAllNodeDetailsEpic, fetchNodeHistoryEpic, updateNodeHistoryEpic
   );
   // combine reducers
   const rootReducer = combineReducers({

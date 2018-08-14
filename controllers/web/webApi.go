@@ -65,15 +65,15 @@ func GetLastPingsForAllNodes(c *gin.Context) {
 
 func GetLastNPingsForANode(c *gin.Context) {
 	id, eP := strconv.Atoi(c.Param("id"))
-	pageSize, eQ := strconv.Atoi(c.Query("pageSize"))
+	lookBackWindow, eQ := strconv.Atoi(c.Query("pageSize"))
 	if eP != nil {
 		c.JSON(http.StatusBadRequest, nil)
 		return
 	}
 	if eQ != nil {
-		pageSize = 30
+		lookBackWindow = 15
 	}
-	nodes, e := services.GetLastNPingsForANode(id, pageSize)
+	nodes, e := services.GetLastNPingsForANode(id, lookBackWindow)
 	if e != nil {
 		c.JSON(http.StatusInternalServerError, nil)
 		return

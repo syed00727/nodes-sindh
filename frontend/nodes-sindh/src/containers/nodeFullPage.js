@@ -1,21 +1,19 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { fetchNodeHistory } from '../actions/nodes'
-import { CircularProgress } from '@material-ui/core';
-import { LineSeries, XAxis, YAxis, XYPlot, VerticalGridLines, HorizontalGridLines } from 'react-vis'
+import { CircularProgress, withStyles } from '@material-ui/core';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import '../../node_modules/react-vis/dist/style.css';
+import { fetchNodeHistory } from '../actions/nodes';
+import TimeSeries from '../presentational/TimeSeries';
 
-const data = [
-    { x: 0, y: 8 },
-    { x: 1, y: 5 },
-    { x: 2, y: 4 },
-    { x: 3, y: 9 },
-    { x: 4, y: 1 },
-    { x: 5, y: 7 },
-    { x: 6, y: 6 },
-    { x: 7, y: 3 },
-    { x: 8, y: 2 },
-    { x: 9, y: 0 }
-];
+
+const style = {
+    chart: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+    }
+}
 
 class NodeFullPage extends Component {
 
@@ -25,7 +23,7 @@ class NodeFullPage extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchNodeHistory(this.props.match.params.nodeId)
+        this.props.fetchNodeHistory(parseInt(this.props.match.params.nodeId))
     }
 
     transformData = history => {
@@ -44,22 +42,33 @@ class NodeFullPage extends Component {
     }
 
     render() {
-        if (this.props.history === null) {
+        const { history, classes } = this.props;
+        let historyData = history.get(parseInt(this.props.match.params.nodeId))
+        if (history.size === 0) {
             return <CircularProgress />
         }
-        return <div>
-            <span> Total records {this.props.history !== null ? this.props.history.length : 'empty'}</span>
-
-            <XYPlot height={500} width={900}>
-                <XAxis />
-                <YAxis />
-                <LineSeries data={this.props.history.map((idx,i) => {
+        return <div className={classes.chart}>
+            <TimeSeries
+                height={400} width={700}
+                YTitle={`Voltage (V)`}
+                data={historyData.map((idx) => {
                     return {
-                        x: i,
+                        x: new Date(idx.Ping),
                         y: idx.Voltage
                     }
-                })}  curve={'curveMonotoneX'} />
-            </XYPlot>
+                })} />
+
+            <TimeSeries
+                stroke='orange'
+                height={400} width={700}
+                YTitle={`Current (A)`}
+                data={historyData.map((idx) => {
+                    return {
+                        x: new Date(idx.Ping),
+                        y: idx.Current
+                    }
+                })} />
+
         </div>
     }
 }
@@ -79,4 +88,4 @@ const mapDispatchToProps = dispatch => {
 
 const NodeFullPageContainer = connect(mapStateToProps, mapDispatchToProps)(NodeFullPage)
 
-export default NodeFullPageContainer
+export default withStyles(style)(NodeFullPageContainer)
