@@ -41,8 +41,11 @@ func init() {
 func GetLastPing(id int) (models.Node, error) {
 
 	ping := models.Node{}
-	row := db.QueryRow("select * from node_pings where id = $1 order by ping_time desc", id)
-	e := row.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power)
+	row := db.QueryRow("select node_pings.id,ping_time,status,voltage,current,power,voltage_limit from node_pings "+
+		"left join voltage_limit on voltage_limit.id = node_pings.id "+
+		"where node_pings.id = $1 "+
+		"order by ping_time desc", id)
+	e := row.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power, &ping.VoltageLimit)
 
 	return ping, e
 
@@ -75,13 +78,15 @@ func GetLastPingForAllNodes() ([]models.Node, error) {
 	rows, e := db.Query("with ranked_messages as " +
 		"(select id,ping_time,status,voltage,current, power ,rank() over (partition by id order by ping_time desc) as rn " +
 		"from node_pings) " +
-		"select id,ping_time,status,voltage,current,power from ranked_messages where rn = 1")
+		"select ranked_messages.id,ping_time,status,voltage,current,power,voltage_limit from ranked_messages " +
+		"left join voltage_limit on voltage_limit.id = ranked_messages.id " +
+		"where rn = 1")
 	if e != nil {
 		return pingList, e
 	}
 	var latestPing models.Node
 	for rows.Next() {
-		e := rows.Scan(&latestPing.Id, &latestPing.Ping, &latestPing.Status, &latestPing.Voltage, &latestPing.Current, &latestPing.Power)
+		e := rows.Scan(&latestPing.Id, &latestPing.Ping, &latestPing.Status, &latestPing.Voltage, &latestPing.Current, &latestPing.Power, &latestPing.VoltageLimit)
 		if e == nil {
 			pingList = append(pingList, latestPing)
 		} else {

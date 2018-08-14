@@ -5,6 +5,7 @@ import (
 
 	"github.com/heroku/go-getting-started/utils"
 	"time"
+	"database/sql"
 )
 
 type Node struct {
@@ -14,6 +15,7 @@ type Node struct {
 	Voltage float64
 	Current float64
 	Id      int
+	VoltageLimit sql.NullFloat64
 }
 
 func (n Node) GetStatus() string {
