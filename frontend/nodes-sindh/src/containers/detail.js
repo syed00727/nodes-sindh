@@ -7,7 +7,20 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
+import grey from '@material-ui/core/colors/grey'
 import PinStatus from '../presentational/pinStatus'
+
+
+const Voltage = (props) => {
+
+    const detail = props.detail;
+    let isAboveLimit = detail.VoltageLimit.Valid && detail.VoltageLimit.Float64 < detail.Voltage
+    return <span>
+        Voltage: <span style={{ color: isAboveLimit ? red[900] : green[900] }} > {Math.round(detail.Voltage * 100) / 100} V </span>
+        <span style={{ fontSize: 10, color: grey[800] }} > {detail.VoltageLimit.Valid ? `limit: ${(Math.round(detail.VoltageLimit.Float64 * 100) / 100)} V` : ``}
+        </span>
+    </span>
+}
 
 dayjs.extend(relativeTime)
 const styles = {
@@ -86,7 +99,7 @@ class Detail extends Component {
                 </div>
 
                 <CardContent className={classes.cardContent}>
-                    <p>Voltage: {Math.round(detail.Voltage * 100) / 100} V</p>
+                    <p><Voltage detail={detail} /></p>
                     <p>Current: {Math.round(detail.Current * 100) / 100} A</p>
                     <PinStatus pinStatus={detail.Status} />
                 </CardContent>
@@ -97,7 +110,7 @@ class Detail extends Component {
 
 const mapStateToProps = state => {
     return {
-        
+
     }
 }
 
@@ -110,7 +123,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const DetailContainer = connect(
-    mapStateToProps , mapDispatchToProps
+    mapStateToProps, mapDispatchToProps
 )(Detail)
 
 export default withStyles(styles)(DetailContainer)
