@@ -49,7 +49,7 @@ func main() {
 
 
 	router.GET("/health", func(c *gin.Context) {
-		c.String(http.StatusOK, "Thanks for asking about my health, I'm fine, How are you ?")
+		c.String(http.StatusOK, "Thanks for asking about my health, Recovered from many serious blows today, How are you ?")
 	})
 
 	router.Run(":" + port)
