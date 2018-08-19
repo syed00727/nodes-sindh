@@ -10,6 +10,7 @@ import (
 	"github.com/heroku/go-getting-started/controllers/web"
 	"github.com/heroku/go-getting-started/controllers/module"
 	"github.com/heroku/go-getting-started/controllers/webSocket"
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
@@ -20,7 +21,9 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	router := gin.New()
+	router := gin.Default()
+	router.Use(cors.Default())
+
 	router.Use(gin.Logger())
 
 	router.LoadHTMLFiles("index.html")
@@ -51,7 +54,6 @@ func main() {
 	router.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "Thanks for asking about my health, Recovered from many serious blows today, How are you ?")
 	})
-
 	router.Run(":" + port)
 
 }

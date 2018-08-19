@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/gin-contrib/cors"
+  packages = ["."]
+  revision = "cf4846e6a636a76237a28d9286f163c132e841bc"
+  version = "v1.2"
+
+[[projects]]
   branch = "master"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
@@ -9,11 +15,7 @@
 
 [[projects]]
   name = "github.com/gin-gonic/gin"
-  packages = [
-    ".",
-    "binding",
-    "render"
-  ]
+  packages = [".","binding","render"]
   revision = "d459835d2b077e44f7c9b453505ee29881d5d12d"
   version = "v1.2"
 
@@ -32,19 +34,13 @@
 [[projects]]
   branch = "master"
   name = "github.com/heroku/x"
-  packages = [
-    "hmetrics",
-    "hmetrics/onload"
-  ]
+  packages = ["hmetrics","hmetrics/onload"]
   revision = "1de401e1ba0e5db3e5c15d2faeee777e0b685700"
 
 [[projects]]
   branch = "master"
   name = "github.com/lib/pq"
-  packages = [
-    ".",
-    "oid"
-  ]
+  packages = [".","oid"]
   revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
 
 [[projects]]
@@ -86,6 +82,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "665fc9168eb276d187ec5a9bb90bada3bba4235d6eec39f692fc02404c988a39"
+  inputs-digest = "6c8e0a67b94bb5f9f91d6e264a6a62727b68594d542b34aceeb6f51cb1d4b5d0"
   solver-name = "gps-cdcl"
   solver-version = 1
