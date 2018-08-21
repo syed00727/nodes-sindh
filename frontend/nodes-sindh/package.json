@@ -24,7 +24,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && cp build/index.html ../../ && cp -r build/static/js/ ../../static/",
+    "build": "react-scripts build && cp build/index.html ../../ && rm -r ../../static  && cp -r build/static/ ../../.",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
