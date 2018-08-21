@@ -26,7 +26,7 @@ func main() {
 	router.Use(cors.Default())
 
 	router.Use(gin.Logger())
-	router.Use(static.Serve("/", static.LocalFile("./frontend/nodes-sindh/build", true)))
+	router.Use(static.Serve("/", static.LocalFile(".", true)))
 	//router.LoadHTMLFiles("index.html")
 	//router.Static("/static", "./static")
 	//
