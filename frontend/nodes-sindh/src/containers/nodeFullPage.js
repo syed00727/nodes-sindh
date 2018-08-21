@@ -23,6 +23,7 @@ class NodeFullPage extends Component {
     }
 
     componentDidMount() {
+        console.log('executed...', this.props.match.params.nodeId)
         this.props.fetchNodeHistory(parseInt(this.props.match.params.nodeId))
     }
 
@@ -44,7 +45,7 @@ class NodeFullPage extends Component {
     render() {
         const { history, classes } = this.props;
         let historyData = history.get(parseInt(this.props.match.params.nodeId))
-        if (history.size === 0) {
+        if (history.size === 0 || historyData == null) {
             return <CircularProgress />
         }
         return <div className={classes.chart}>

@@ -59,5 +59,5 @@ export const fetchNodeHistoryEpic = action$ =>
     )
     )
 
-export const updateNodeHistoryEpic = action$ =>
-    action$.pipe(ofType(UPDATE_NODE_DETAIL), map(action => addToHistory(action.payload)))
+// export const updateNodeHistoryEpic = action$ =>
+//     action$.pipe(ofType(UPDATE_NODE_DETAIL), map(action => addToHistory(action.payload)))

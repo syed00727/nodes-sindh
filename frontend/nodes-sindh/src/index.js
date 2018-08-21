@@ -14,13 +14,13 @@ import { detail } from './reducers/detailReducer';
 import { nodes } from './reducers/nodeReducer';
 import { history } from './reducers/historyReducer'
 import { ws } from './websocket'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
 const configureStore = (preLoadedState) => {
 
   // combine epics
   const rootEpic = combineEpics(
-    fetchNodesEpic, fetchNodeDetailEpic, sendCommandEpic, fetchAllNodeDetailsEpic, fetchNodeHistoryEpic, updateNodeHistoryEpic
+    fetchNodesEpic, fetchNodeDetailEpic, sendCommandEpic, fetchAllNodeDetailsEpic, fetchNodeHistoryEpic /*, updateNodeHistoryEpic */
   );
   // combine reducers
   const rootReducer = combineReducers({
@@ -43,9 +43,9 @@ let store = configureStore();
 
 const renderApp = () => render(
   <Provider store={store}>
-    <BrowserRouter>
+    <HashRouter>
       <App />
-    </BrowserRouter>
+    </HashRouter>
   </Provider>,
   document.getElementById('root')
 );

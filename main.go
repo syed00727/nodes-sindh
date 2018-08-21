@@ -11,6 +11,7 @@ import (
 	"github.com/heroku/go-getting-started/controllers/module"
 	"github.com/heroku/go-getting-started/controllers/webSocket"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/contrib/static"
 )
 
 func main() {
@@ -25,13 +26,13 @@ func main() {
 	router.Use(cors.Default())
 
 	router.Use(gin.Logger())
-
-	router.LoadHTMLFiles("index.html")
-	router.Static("/static", "./static")
-
-	router.GET("/", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "index.html", gin.H{})
-	})
+	router.Use(static.Serve("/", static.LocalFile("./frontend/nodes-sindh/build", true)))
+	//router.LoadHTMLFiles("index.html")
+	//router.Static("/static", "./static")
+	//
+	//router.GET("/", func(context *gin.Context) {
+	//	context.HTML(http.StatusOK, "index.html", gin.H{})
+	//})
 
 	//APIs for module
 	router.POST("/node/status/:status", module.PostNodeStatus)
