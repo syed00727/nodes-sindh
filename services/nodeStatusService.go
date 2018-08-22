@@ -27,18 +27,13 @@ func UpdateNodeStatus(status string) (*models.Node, error) {
 	return &nodeObj, nil
 }
 
-func GetCommandForNode(nodeId int) (string, error) {
-	command, e := repos.GetLatestCommand(nodeId)
+func GetCommandForNode(nodeId int) (commandStr string, err error) {
+	if command, err := repos.GetLatestCommand(nodeId); err == nil && command.Command != "" {
+		err = repos.SetReceived(nodeId)
+		commandStr = command.Command
+	}
+	return commandStr, err
 
-	if e == nil && command.Command != "" {
-		e = repos.SetReceived(nodeId)
-	}
-	// to make sure not to propagate error if there's no command.
-	// finding no command is quite a valid case
-	if command.Command == "" {
-		return "", nil
-	}
-	return command.Command, e
 }
 
 func populateNodeObj(statusStr string) models.Node {
@@ -72,5 +67,9 @@ func GetLastPingsForAllNodes() ([]models.Node, error) {
 }
 
 func GetLastNPingsForANode(id int, n int) ([]models.Node, error) {
-	return repos.GetLastNPingsForANode(id,n)
+	return repos.GetLastNPingsForANode(id, n)
+}
+
+func GetPingsForANodeInLastXInterval(id int, interval int) (pingList []models.Node, err error) {
+	return repos.GetLastPingsForNodeInXInterval(id, interval)
 }

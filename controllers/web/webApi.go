@@ -113,3 +113,26 @@ func SetVoltageLimit(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 
 }
+
+func GetHistoryInLastXMinutes(c *gin.Context) {
+
+	var id int
+	var interval int
+	var err error
+	if id, err = strconv.Atoi(c.Param("id")); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	if interval, err = strconv.Atoi(c.Query("interval")); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	if pingList, err := services.GetPingsForANodeInLastXInterval(id, interval); err == nil {
+		c.JSON(http.StatusOK, pingList)
+		return
+	} else {
+		c.JSON(http.StatusInternalServerError, err)
+	}
+}

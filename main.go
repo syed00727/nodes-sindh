@@ -44,6 +44,7 @@ func main() {
 		api.POST("node/voltage/limit/:id", web.SetVoltageLimit)
 		api.POST("/node/command/:action", web.SendCommand)
 		api.GET("/node/history/:id", web.GetLastNPingsForANode)
+		api.GET("/node/lookback/:id", web.GetHistoryInLastXMinutes)
 		api.GET("/node/status/:id", web.GetNodeStatus)
 		api.GET("/nodes", web.GetNodeIds)
 		api.GET("/nodes/all", web.GetLastPingsForAllNodes)

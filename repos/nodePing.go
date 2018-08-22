@@ -30,8 +30,7 @@ func init() {
 		panic(err)
 	}
 
-	err = db.Ping()
-	if err != nil {
+	if err = db.Ping(); err != nil {
 		panic(err)
 	}
 
@@ -61,8 +60,7 @@ func GetNodeIds() ([]int, error) {
 	nodes := make([]int, 0)
 	var Id int
 	for rows.Next() {
-		e := rows.Scan(&Id)
-		if e != nil {
+		if e := rows.Scan(&Id); e != nil {
 			return nodes, e
 		}
 		nodes = append(nodes, Id)
@@ -86,8 +84,7 @@ func GetLastPingForAllNodes() ([]models.Node, error) {
 	}
 	var latestPing models.Node
 	for rows.Next() {
-		e := rows.Scan(&latestPing.Id, &latestPing.Ping, &latestPing.Status, &latestPing.Voltage, &latestPing.Current, &latestPing.Power, &latestPing.VoltageLimit)
-		if e == nil {
+		if e := rows.Scan(&latestPing.Id, &latestPing.Ping, &latestPing.Status, &latestPing.Voltage, &latestPing.Current, &latestPing.Power, &latestPing.VoltageLimit); e == nil {
 			pingList = append(pingList, latestPing)
 		} else {
 			break
@@ -98,22 +95,35 @@ func GetLastPingForAllNodes() ([]models.Node, error) {
 
 }
 
-func GetLastNPingsForANode(id int, n int) ([]models.Node, error) {
-	pingList := make([]models.Node, 0)
-	rows, e := db.Query("select * from node_pings where id = $1 order by ping_time desc limit $2", id, n)
-	if e != nil {
-		return pingList, e
+func GetLastNPingsForANode(id int, n int) (pingList []models.Node, err error) {
+
+	if rows, err := db.Query("select * from node_pings where id = $1 order by ping_time desc limit $2", id, n); err == nil {
+		return getNodeList(rows)
 	}
+	return pingList, err
+}
+
+func GetLastPingsForNodeInXInterval(id int, interval int) (pingList []models.Node, err error) {
+	var rows *sql.Rows
+	queryStr := fmt.Sprintf("select * from node_pings where id = %d and ping_time > now() - interval '%d minutes'", id, interval)
+	if rows, err = db.Query(queryStr); err == nil {
+		return getNodeList(rows)
+	}
+	return pingList, err
+
+}
+
+func getNodeList(rows *sql.Rows) (nodeList []models.Node, err error) {
+	pingList := make([]models.Node, 0)
 	var ping models.Node
 	for rows.Next() {
-		e := rows.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power)
-		if e == nil {
+		if err = rows.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.Voltage, &ping.Current, &ping.Power); err == nil {
 			pingList = append(pingList, ping)
 		} else {
 			break
 		}
 
 	}
-	return pingList, e
+	return pingList, err
 
 }
