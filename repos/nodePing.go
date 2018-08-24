@@ -13,6 +13,7 @@ var db *sql.DB
 
 func init() {
 	var err error
+	var connStr string
 	if os.Getenv("PROFILE") == "LOCAL" {
 		username := os.Getenv("DB_USR")
 		password := os.Getenv("DB_PWD")
@@ -20,12 +21,11 @@ func init() {
 		dbPort := os.Getenv("DB_PORT")
 		dbSchema := os.Getenv("DB_SCHEMA")
 
-		connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, dbPort, dbSchema)
-		db, err = sql.Open("postgres", connStr)
+		connStr = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, dbPort, dbSchema)
 	} else {
-
-		db, err = sql.Open("postgres", os.Getenv("DATABASE_URL")+"?sslmode=require")
+		connStr = fmt.Sprintf("%s?sslmode=require", os.Getenv("DATABASE_URL"))
 	}
+	db, err = sql.Open("postgres", connStr)
 	if err != nil {
 		panic(err)
 	}

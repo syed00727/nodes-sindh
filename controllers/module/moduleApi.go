@@ -11,7 +11,7 @@ func PostNodeStatus(c *gin.Context) {
 	status := c.Param("status")
 	node, e := services.UpdateNodeStatus(status)
 	if e != nil {
-		c.String(http.StatusBadRequest, "")
+		c.JSON(http.StatusBadRequest, e)
 	} else {
 
 		command, e := services.GetCommandForNode((*node).Id)

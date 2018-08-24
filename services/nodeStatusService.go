@@ -20,8 +20,7 @@ func GetNodeLastPingString(id int) string {
 
 func UpdateNodeStatus(status string) (*models.Node, error) {
 	nodeObj := populateNodeObj(status)
-	err := repos.UpdateNodeStatus(nodeObj)
-	if err != nil {
+	if err := repos.UpdateNodeStatus(nodeObj) ; err != nil {
 		return nil, err
 	}
 	return &nodeObj, nil
