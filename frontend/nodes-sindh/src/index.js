@@ -1,20 +1,19 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { HashRouter } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import logger from 'redux-logger';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { fetchAllNodeDetails, fetchNodes, updateNodeDetail } from './actions/nodes';
+import { fetchAllNodeDetails, fetchNodes } from './actions/nodes';
 import App from './App';
-import { fetchAllNodeDetailsEpic, fetchNodeDetailEpic, fetchNodesEpic, sendCommandEpic, fetchNodeHistoryEpic, updateNodeHistoryEpic } from './epics/nodeEpics';
+import { fetchAllNodeDetailsEpic, fetchNodeDetailEpic, fetchNodeHistoryEpic, fetchNodesEpic, sendCommandEpic } from './epics/nodeEpics';
 import './index.css';
 import { detail } from './reducers/detailReducer';
+import { history } from './reducers/historyReducer';
 import { nodes } from './reducers/nodeReducer';
-import { history } from './reducers/historyReducer'
-import { ws } from './websocket'
-import { HashRouter } from 'react-router-dom'
 
 const configureStore = (preLoadedState) => {
 
@@ -75,6 +74,6 @@ interval(3000)
     , take(1)
   ).subscribe();
 
-ws.onmessage = webSocketRes => {
-  store.dispatch(updateNodeDetail(JSON.parse(webSocketRes.data)))
-} 
+// ws.onmessage = webSocketRes => {
+//   store.dispatch(updateNodeDetail(JSON.parse(webSocketRes.data)))
+// } 

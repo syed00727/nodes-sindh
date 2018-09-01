@@ -9,7 +9,7 @@ import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 import grey from '@material-ui/core/colors/grey'
 import PinStatus from '../presentational/pinStatus'
-
+import { Link } from 'react-router-dom'
 
 const Voltage = (props) => {
 
@@ -88,7 +88,7 @@ class Detail extends Component {
                     <div className={classes.cardheader}>
                         <span style={{ ...styles.dot, backgroundColor: powerStatus }} ></span>
                         <Typography variant="headline" component="h2">
-                            Node {detail.Id}
+                           <Link to={`/node/${detail.Id}`} >Node {detail.Id}</Link> 
                         </Typography>
                         <Switch className={classes.switch} checked={detail.Power} onChange={this.toggleNodePower} color="primary" />
                     </div>

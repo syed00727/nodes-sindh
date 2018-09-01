@@ -4,7 +4,7 @@ import { fetchNodes, fetchNodeDetail } from '../actions/nodes';
 import { AppBar, CircularProgress, withStyles, Select } from '@material-ui/core';
 
 const styles = {
-    root: { margin: '3px', padding: '3px', display: 'grid', gridTemplateColumns: '10% 10% 80%' ,gridGap : '5px 15px' }
+    root: { margin: '3px', padding: '3px', display: 'grid', gridTemplateColumns: '50% 50%' ,gridGap : '5px 15px' }
 }
 
 class NodeList extends Component {
@@ -26,7 +26,7 @@ class NodeList extends Component {
 
     updateChoice = (event) => {
         let nodeId = event.target.value;
-        this.props.fetchDetail(nodeId)
+        // this.props.fetchDetail(nodeId) //TODO: remove this 
     }
     render() {
         const { nodes, classes } = this.props;
@@ -34,7 +34,7 @@ class NodeList extends Component {
         return <div>
             <AppBar color='secondary' position='static' className={classes.root}>
                 <div>Nodes </div>
-                {nodes === null ? <CircularProgress /> :
+                {/* {nodes === null ? <CircularProgress /> :
                     <select onChange={this.updateChoice}>
                         {
                             this.props.nodes.sort().map(i => {
@@ -42,7 +42,7 @@ class NodeList extends Component {
                             })
                         }
                     </select>
-                }
+                } */}
                 <div> The styling is under development. Ignore hiccups </div>
             </AppBar>
         </div>

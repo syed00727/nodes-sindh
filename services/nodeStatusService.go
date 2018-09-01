@@ -19,7 +19,7 @@ func GetNodeLastPingString(id int) string {
 }
 
 func UpdateNodeStatus(status string) (*models.Node, error) {
-	nodeObj := populateNodeObj(status)
+	nodeObj := populateNode(status)
 	if err := repos.UpdateNodeStatus(nodeObj) ; err != nil {
 		return nil, err
 	}
@@ -35,11 +35,17 @@ func GetCommandForNode(nodeId int) (commandStr string, err error) {
 
 }
 
-func populateNodeObj(statusStr string) models.Node {
+func populateNode(statusStr string) models.Node {
 	split := strings.Split(statusStr, "|")
 	power, ep := strconv.Atoi(split[0])
+	if ep != nil {
+		return models.Node{}
+	}
 	status := bintodec.ToDec(split[1])
 	voltage, ev := strconv.ParseFloat(split[2], 64)
+	if ev != nil {
+		return models.Node{}
+	}
 	current, ec := strconv.ParseFloat(split[3], 64)
 	id, ei := strconv.Atoi(split[4])
 	if ep != nil || ev != nil || ec != nil || ei != nil {

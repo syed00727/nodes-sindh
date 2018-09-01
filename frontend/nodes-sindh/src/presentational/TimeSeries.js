@@ -21,7 +21,7 @@ class TimeSeries extends Component {
                 <XYPlot height={this.props.height} width={this.props.width}
                     xType="time"
                 >
-                    <XAxis tickLabelAngle={-45} title="Time" />
+                    <XAxis tickLabelAngle={0} title="Time" />
                     <YAxis title={this.props.YTitle} />
                     <VerticalGridLines />
                     <HorizontalGridLines />
