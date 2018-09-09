@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/heroku/go-getting-started/models"
+	"github.com/heroku/go-getting-started/models/node"
 	"github.com/heroku/go-getting-started/repos"
 	"strings"
 	"strconv"
@@ -9,18 +9,13 @@ import (
 	"time"
 )
 
-func GetNode(id int) (models.Node, error) {
+func GetNode(id int) (node.New, error) {
 	return repos.GetLastPing(id)
 }
 
-func GetNodeLastPingString(id int) string {
-	ping, _ := repos.GetLastPing(id)
-	return ping.GetStatusString()
-}
-
-func UpdateNodeStatus(status string) (*models.Node, error) {
+func UpdateNodeStatus(status string) (*node.New, error) {
 	nodeObj := populateNode(status)
-	if err := repos.UpdateNodeStatus(nodeObj) ; err != nil {
+	if err := repos.UpdateNodeStatus(nodeObj); err != nil {
 		return nil, err
 	}
 	return &nodeObj, nil
@@ -35,23 +30,25 @@ func GetCommandForNode(nodeId int) (commandStr string, err error) {
 
 }
 
-func populateNode(statusStr string) models.Node {
+/*
+"batter voltage | status | power solar | power battery to grid | power grid to battery |  power battery to load | power switch | grid voltage | grid switch" */
+
+func populateNode(statusStr string) node.New {
 	split := strings.Split(statusStr, "|")
-	power, ep := strconv.Atoi(split[0])
-	if ep != nil {
-		return models.Node{}
+	id, e := strconv.Atoi(split[0])
+	batteryVoltage, e := strconv.ParseFloat(split[1], 64)
+	status := bintodec.ToDec(split[2])
+	powerSolarInput, e := strconv.ParseFloat(split[3], 64)
+	powerBatteryToGrid, e := strconv.ParseFloat(split[4], 64)
+	powerGridToBattery, e := strconv.ParseFloat(split[5], 64)
+	powerBatteryToLoad, e := strconv.ParseFloat(split[6], 64)
+	powerSwitch, e := strconv.Atoi(split[7])
+	gridVoltage, e := strconv.ParseFloat(split[8], 64)
+	if e != nil {
+		return node.New{}
 	}
-	status := bintodec.ToDec(split[1])
-	voltage, ev := strconv.ParseFloat(split[2], 64)
-	if ev != nil {
-		return models.Node{}
-	}
-	current, ec := strconv.ParseFloat(split[3], 64)
-	id, ei := strconv.Atoi(split[4])
-	if ep != nil || ev != nil || ec != nil || ei != nil {
-		return models.Node{}
-	}
-	return models.Node{Power: power, Ping: time.Now(), Status: status, Voltage: voltage, Current: current, Id: id}
+
+	return node.New{Power: powerSwitch, Ping: time.Now(), Status: status, BatteryVoltage: batteryVoltage, PowerBatteryToLoad: powerBatteryToLoad, PowerGridToBattery: powerGridToBattery, PowerBatteryToGrid: powerBatteryToGrid, Id: id, PowerSolarInput: powerSolarInput, GridVoltage: gridVoltage}
 
 }
 
@@ -67,14 +64,14 @@ func GetNodeIds() ([]int, error) {
 	return repos.GetNodeIds()
 }
 
-func GetLastPingsForAllNodes() ([]models.Node, error) {
+func GetLastPingsForAllNodes() ([]node.New, error) {
 	return repos.GetLastPingForAllNodes()
 }
 
-func GetLastNPingsForANode(id int, n int) ([]models.Node, error) {
+func GetLastNPingsForANode(id int, n int) ([]node.New, error) {
 	return repos.GetLastNPingsForANode(id, n)
 }
 
-func GetPingsForANodeInLastXInterval(id int, interval int) (pingList []models.Node, err error) {
+func GetPingsForANodeInLastXInterval(id int, interval int) (pingList []node.New, err error) {
 	return repos.GetLastPingsForNodeInXInterval(id, interval)
 }

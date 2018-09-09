@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-func GetStatusFromDb() models.Node {
-	return models.Node{1, time.Now(),48, 12.4, 0.3, 12}
+func GetStatusFromDb() models.New {
+	return models.New{1, time.Now(),48, 12.4, 0.3, 12}
 }
 
-func GetFormattedNodeStatus() models.Node {
-	return models.Node{1, time.Now(),48, 12.4, 0.3, 12}
+func GetFormattedNodeStatus() models.New {
+	return models.New{1, time.Now(),48, 12.4, 0.3, 12}
 }

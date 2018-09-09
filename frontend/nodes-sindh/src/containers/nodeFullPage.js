@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import '../../node_modules/react-vis/dist/style.css';
 import { fetchNodeHistory } from '../actions/nodes';
 import TimeSeries from '../presentational/TimeSeries';
-
+import { grey } from '@material-ui/core/colors'
+import PinStatus from '../presentational/pinStatus';
 
 const style = {
     chart: {
@@ -12,6 +13,14 @@ const style = {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center'
+    },
+    topBar: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        backgroundColor: grey[200],
+        padding: 5,
+        margin: 2
     }
 }
 
@@ -23,7 +32,7 @@ class NodeFullPage extends Component {
     }
 
     componentDidMount() {
-        console.log('executed...', this.props.match.params.nodeId)
+        // console.log('executed...', this.props.match.params.nodeId)
         this.props.fetchNodeHistory(parseInt(this.props.match.params.nodeId))
     }
 
@@ -42,42 +51,66 @@ class NodeFullPage extends Component {
         )
     }
 
+    currentInfo = (node, classes) => {
+        if (node == null) {
+            return <CircularProgress />
+        }
+        return (
+            <div className={classes.topBar}>
+                <span>Node {node.Id}</span>
+                <span>Voltage {Math.round(node.Voltage * 100) / 100} V</span>
+                <span>Current {Math.round(node.Current * 100) / 100} A</span>
+                <span><span>Pin Status</span><span><PinStatus pinStatus={node.Status} ></PinStatus> </span> </span>
+                <span>Last Ping {node.Ping}</span>
+            </div>
+        )
+    }
+
     render() {
-        const { history, classes } = this.props;
-        let historyData = history.get(parseInt(this.props.match.params.nodeId))
+        const { history, classes, detail } = this.props;
+        const nodeId = this.props.match.params.nodeId
+        const node = detail.toJS()[nodeId]
+        let historyData = history.get(parseInt(nodeId))
         if (history.size === 0 || historyData == null) {
             return <CircularProgress />
         }
-        return <div className={classes.chart}>
-            <TimeSeries
-                height={400} width={700}
-                YTitle={`Voltage (V)`}
-                data={historyData.map((idx) => {
-                    return {
-                        x: new Date(idx.Ping),
-                        y: idx.Voltage
-                    }
-                })} />
+        return (
+            <div>
+                {this.currentInfo(node, classes)}
+                <div className={classes.chart}>
 
-            <TimeSeries
-                stroke='orange'
-                height={400} width={700}
-                YTitle={`Current (A)`}
-                data={historyData.map((idx) => {
-                    return {
-                        x: new Date(idx.Ping),
-                        y: idx.Current
-                    }
-                })} />
+                    <TimeSeries
+                        height={400} width={700}
+                        YTitle={`Voltage (V)`}
+                        data={historyData.map((idx) => {
+                            return {
+                                x: new Date(idx.Ping),
+                                y: idx.Voltage
+                            }
+                        })} />
 
-        </div>
+                    <TimeSeries
+                        stroke='orange'
+                        height={400} width={700}
+                        YTitle={`Current (A)`}
+                        data={historyData.map((idx) => {
+                            return {
+                                x: new Date(idx.Ping),
+                                y: idx.Current
+                            }
+                        })} />
+
+                </div>
+            </div>
+        )
     }
 }
 
 
 const mapStateToProps = state => {
     return {
-        history: state.history
+        history: state.history,
+        detail: state.detail
     }
 }
 

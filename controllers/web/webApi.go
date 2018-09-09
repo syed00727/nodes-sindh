@@ -45,14 +45,14 @@ func SendCommand(c *gin.Context) {
 
 }
 
-func GetStatusString(c *gin.Context) {
-	id, e := strconv.Atoi(c.Param("id"))
-	if e != nil {
-		c.String(http.StatusBadRequest, "Something went wrong")
-		return
-	}
-	c.String(http.StatusOK, services.GetNodeLastPingString(id))
-}
+//func GetStatusString(c *gin.Context) {
+//	id, e := strconv.Atoi(c.Param("id"))
+//	if e != nil {
+//		c.String(http.StatusBadRequest, "Something went wrong")
+//		return
+//	}
+//	c.String(http.StatusOK, services.GetNodeLastPingString(id))
+//}
 
 func GetLastPingsForAllNodes(c *gin.Context) {
 	lastPingsForAllNodes, e := services.GetLastPingsForAllNodes()

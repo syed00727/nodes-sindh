@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import DetailGrid from './containers/detailGrid';
 import NodeFullPage from './containers/nodeFullPage';
 import NodeListContainer from './containers/nodes';
-import { connect } from 'react-redux'
+import { connect} from 'react-redux'
 import { updateNodeDetail } from './actions/nodes'
 
 class App extends Component {
@@ -41,4 +41,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
