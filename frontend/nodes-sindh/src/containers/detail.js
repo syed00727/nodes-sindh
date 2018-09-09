@@ -16,7 +16,7 @@ const Voltage = (props) => {
     const detail = props.detail;
     let isAboveLimit = detail.VoltageLimit.Valid && detail.VoltageLimit.Float64 < detail.Voltage
     return <span>
-        Voltage: <span style={{ color: isAboveLimit ? red[900] : green[900] }} > {Math.round(detail.Voltage * 100) / 100} V </span>
+       Battery Voltage: <span style={{ color: isAboveLimit ? red[900] : green[900] }} > {Math.round(detail.BatteryVoltage * 100) / 100} V </span>
         <span style={{ fontSize: 11, color: grey[800] }} > {detail.VoltageLimit.Valid ? `limit: ${(Math.round(detail.VoltageLimit.Float64 * 100) / 100)} V` : ``}
         </span>
     </span>
@@ -100,7 +100,7 @@ class Detail extends Component {
 
                 <CardContent className={classes.cardContent}>
                     <p><Voltage detail={detail} /></p>
-                    <p>Current: {Math.round(detail.Current * 100) / 100} A</p>
+                    <p>Power: {Math.round(detail.PowerSolarInput * 100) / 100} W</p>
                     <PinStatus pinStatus={detail.Status} />
                 </CardContent>
             </Card>

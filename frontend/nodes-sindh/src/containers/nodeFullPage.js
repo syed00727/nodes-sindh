@@ -45,7 +45,7 @@ class NodeFullPage extends Component {
             idx => {
                 return {
                     x: new Date(idx.Ping),
-                    y: idx.Voltage
+                    y: idx.BatteryVoltage
                 }
             }
         )
@@ -58,8 +58,8 @@ class NodeFullPage extends Component {
         return (
             <div className={classes.topBar}>
                 <span>Node {node.Id}</span>
-                <span>Voltage {Math.round(node.Voltage * 100) / 100} V</span>
-                <span>Current {Math.round(node.Current * 100) / 100} A</span>
+                <span>Battery Voltage {Math.round(node.BatteryVoltage * 100) / 100} V</span>
+                <span>Power Solar Input {Math.round(node.PowerSolarInput * 100) / 100} A</span>
                 <span><span>Pin Status</span><span><PinStatus pinStatus={node.Status} ></PinStatus> </span> </span>
                 <span>Last Ping {node.Ping}</span>
             </div>
