@@ -56,7 +56,9 @@ const styles = {
     }
 
 };
-
+ const formatFloat = num => {
+     return Math.round(num * 100 / 100)
+ } 
 
 class Detail extends Component {
 
@@ -100,7 +102,11 @@ class Detail extends Component {
 
                 <CardContent className={classes.cardContent}>
                     <p><Voltage detail={detail} /></p>
-                    <p>Power: {Math.round(detail.PowerSolarInput * 100) / 100} W</p>
+                    <p>Solar Input: {Math.round(detail.PowerSolarInput * 100) / 100} W</p>
+                    <p>Battery to Grid  :{formatFloat(detail.PowerBatteryToGrid)} W</p>
+                    <p>Grid to Battery  : {formatFloat(detail.PowerGridToBattery)} W</p>
+                    <p> Battery to Load : {formatFloat(detail.PowerBatteryToLoad)} W</p>
+                    <p> Grid Voltage : {formatFloat(detail.GridVoltage)} W</p>
                     <PinStatus pinStatus={detail.Status} />
                 </CardContent>
             </Card>
