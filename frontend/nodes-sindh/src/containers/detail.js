@@ -106,7 +106,7 @@ class Detail extends Component {
                     <p>Battery to Grid  :{formatFloat(detail.PowerBatteryToGrid)} W</p>
                     <p>Grid to Battery  : {formatFloat(detail.PowerGridToBattery)} W</p>
                     <p> Battery to Load : {formatFloat(detail.PowerBatteryToLoad)} W</p>
-                    <p> Grid Voltage : {formatFloat(detail.GridVoltage)} W</p>
+                    <p> Grid Voltage : {formatFloat(detail.GridVoltage)} V</p>
                     <PinStatus pinStatus={detail.Status} />
                 </CardContent>
             </Card>
