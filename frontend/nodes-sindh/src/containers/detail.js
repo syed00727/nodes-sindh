@@ -1,4 +1,4 @@
-import { CardContent, Typography, withStyles, CircularProgress, Switch } from '@material-ui/core';
+import { CardContent, Typography, withStyles, CircularProgress, Switch, Button, Dialog } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -10,13 +10,14 @@ import red from '@material-ui/core/colors/red'
 import grey from '@material-ui/core/colors/grey'
 import PinStatus from '../presentational/pinStatus'
 import { Link } from 'react-router-dom'
+import CommandPanel from '../presentational/commandPanel';
 
 const Voltage = (props) => {
 
     const detail = props.detail;
     let isAboveLimit = detail.VoltageLimit.Valid && detail.VoltageLimit.Float64 < detail.Voltage
     return <span>
-       Battery Voltage: <span style={{ color: isAboveLimit ? red[900] : green[900] }} > {Math.round(detail.BatteryVoltage * 100) / 100} V </span>
+        Battery Voltage: <span style={{ color: isAboveLimit ? red[900] : green[900] }} > {Math.round(detail.BatteryVoltage * 100) / 100} V </span>
         <span style={{ fontSize: 11, color: grey[800] }} > {detail.VoltageLimit.Valid ? `limit: ${(Math.round(detail.VoltageLimit.Float64 * 100) / 100)} V` : ``}
         </span>
     </span>
@@ -53,15 +54,21 @@ const styles = {
     },
     switch: {
         placeSelf: 'center end'
+    },
+    dialog: {
+        maxWidth: 800
     }
 
 };
- const formatFloat = num => {
-     return Math.round(num * 100 / 100)
- } 
+const formatFloat = num => {
+    return Math.round(num * 100 / 100)
+}
 
 class Detail extends Component {
 
+    state = {
+        dialogOpen: false
+    }
     constructor(props) {
         super(props)
         this.toggleNodePower = this.toggleNodePower.bind(this)
@@ -73,8 +80,13 @@ class Detail extends Component {
         this.props.sendCommand(command, this.props.detail.Id)
     }
 
+    openDialog = () => {
+        this.setState({ dialogOpen: true })
+    }
 
-
+    closeDialog = () => {
+        this.setState({ dialogOpen: false })
+    }
     render() {
         const { detail, classes } = this.props;
         if (detail === null) {
@@ -90,9 +102,9 @@ class Detail extends Component {
                     <div className={classes.cardheader}>
                         <span style={{ ...styles.dot, backgroundColor: powerStatus }} ></span>
                         <Typography variant="headline" component="h2">
-                           <Link to={`/node/${detail.Id}`} >Node {detail.Id}</Link> 
+                            <Link to={`/node/${detail.Id}`} >Node {detail.Id}</Link>
                         </Typography>
-                        <Switch className={classes.switch} checked={detail.Power} onChange={this.toggleNodePower} color="primary" />
+                        <Button onClick={this.openDialog}>Send Command</Button>
                     </div>
                     <Typography color="textSecondary">
                         Last Ping {date.fromNow()}
@@ -110,6 +122,9 @@ class Detail extends Component {
                     <PinStatus pinStatus={detail.Status} />
                 </CardContent>
             </Card>
+            <Dialog fullWidth open={this.state.dialogOpen} onClose={this.closeDialog}>
+                <CommandPanel />
+            </Dialog>
         </div>
     }
 }
