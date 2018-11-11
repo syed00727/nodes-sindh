@@ -26,6 +26,11 @@ func GetNodeIds(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, e)
 		return
 	}
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+
 	c.JSON(http.StatusOK, ids)
 }
 
@@ -60,6 +65,11 @@ func GetLastPingsForAllNodes(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, nil)
 		return
 	}
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+
 	c.JSON(http.StatusOK, lastPingsForAllNodes)
 }
 
