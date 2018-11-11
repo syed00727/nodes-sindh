@@ -27,6 +27,11 @@ class CommandPanel extends Component {
     handlePowerLimitChange = name => event => {
         this.setState({ [name]: event.target.value })
     }
+
+    handleSubmit = () => {
+        let command = `${this.state.switch1}|${this.state.switch2}|${this.state.powerLimit1}|${this.state.powerLimit2}`
+        this.props.commandFunc(command, this.props.nodeId)
+    }
     render() {
         const { classes } = this.props;
         return (
@@ -66,7 +71,7 @@ class CommandPanel extends Component {
 
 
                 </div>
-                <Button color='secondary'>Submit</Button>
+                <Button color='secondary' onClick={this.handleSubmit}>Submit</Button>
 
             </Fragment>
 

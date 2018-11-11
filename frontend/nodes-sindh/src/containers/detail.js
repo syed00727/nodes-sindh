@@ -123,7 +123,7 @@ class Detail extends Component {
                 </CardContent>
             </Card>
             <Dialog fullWidth open={this.state.dialogOpen} onClose={this.closeDialog}>
-                <CommandPanel />
+                <CommandPanel nodeId={detail.Id} commandFunc={this.props.sendCommand}/>
             </Dialog>
         </div>
     }
