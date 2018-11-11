@@ -23,7 +23,10 @@ func main() {
 	}
 
 	router := gin.Default()
-	router.Use(cors.Default())
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowCredentials = true
+	router.Use(cors.New(config))
 
 	router.Use(gin.Logger())
 	router.Use(static.Serve("/", static.LocalFile(".", true)))
