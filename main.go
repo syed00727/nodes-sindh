@@ -10,7 +10,6 @@ import (
 	"github.com/heroku/go-getting-started/controllers/web"
 	"github.com/heroku/go-getting-started/controllers/module"
 	"github.com/heroku/go-getting-started/controllers/webSocket"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 )
 
@@ -23,10 +22,7 @@ func main() {
 	}
 
 	router := gin.Default()
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowCredentials = true
-	router.Use(cors.New(config))
+
 
 	router.Use(gin.Logger())
 	router.Use(static.Serve("/", static.LocalFile(".", true)))
