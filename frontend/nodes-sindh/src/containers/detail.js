@@ -33,7 +33,7 @@ const styles = {
     },
     card: {
         padding: 10,
-        maxWidth: 300
+        maxWidth: 500
     },
     dot: {
         height: 15,
@@ -112,7 +112,7 @@ class Detail extends Component {
                             {/* <Link to={`/node/${detail.Id}`} >Node {detail.Id}</Link> */}
                             PMU {detail.Id}
                         </Typography>
-                        <Button onClick={this.openDialog}>Send Command</Button>
+                        {/* <Button onClick={this.openDialog}>Send Command</Button> */}
                     </div>
                     <Typography color="textSecondary">
                         Last Ping {date.fromNow()}
@@ -127,23 +127,23 @@ class Detail extends Component {
                         <Block title={`Battery to Grid`} num={formatFloat(detail.PowerBatteryToGrid)} dim='W' />
                         <Block title={`Grid to Battery`} num={formatFloat(detail.PowerGridToBattery)} dim='W' />
                         <Block title={`Battery to Load`} num={formatFloat(detail.PowerBatteryToLoad)} dim='W' />
+                        <Block title={`Solar Input`} num={formatFloat(detail.PowerSolarInput)} dim='W' />
 
 
                     </ValuesGrid>
+                    <CommandPanel nodeId={detail.Id}
+                        commandFunc={this.props.sendCommand}
+                        switch1={detail.Switch1}
+                        switch2={detail.Switch2}
+                        powerLimit1={detail.Limit1.Float64}
+                        powerLimit2={detail.Limit2.Float64}
+                        powerLimit3={detail.Limit3.Float64}
+                        powerLimit4={detail.Limit4.Float64}
+                    />
                     {/* <PinStatus pinStatus={detail.Status} /> */}
                 </CardContent>
             </Card>
-            <Dialog fullWidth open={this.state.dialogOpen} onClose={this.closeDialog}>
-                <CommandPanel nodeId={detail.Id} 
-                commandFunc={this.props.sendCommand} 
-                switch1={detail.Switch1} 
-                switch2={detail.Switch2} 
-                powerLimit1={detail.Limit1.Float64}
-                powerLimit2={detail.Limit2.Float64}
-                powerLimit3={detail.Limit3.Float64}
-                powerLimit4={detail.Limit4.Float64}
-                />
-            </Dialog>
+           
         </div>
     }
 }
