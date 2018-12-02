@@ -72,19 +72,7 @@ class CommandPanel extends Component {
                         value={this.state.powerLimit2}
                         onChange={this.handlePowerLimitChange('powerLimit2')}
                     />
-                     <TextField
-                        id="power-limit-3"
-                        label="Power Limit 3"
-                        value={this.state.powerLimit3}
-                        onChange={this.handlePowerLimitChange('powerLimit3')}
-                    />
-
-                    <TextField
-                        id="power-limit-4"
-                        label="Power Limit 4"
-                        value={this.state.powerLimit4}
-                        onChange={this.handlePowerLimitChange('powerLimit4')}
-                    />
+                   
 
 
                 </div>
