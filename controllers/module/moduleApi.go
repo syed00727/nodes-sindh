@@ -18,9 +18,11 @@ func PostNodeStatus(c *gin.Context) {
 		if e != nil {
 			c.String(http.StatusInternalServerError, command)
 		}
-		webSocketConnection := webSocket.GetWebSocketConnection()
-		if webSocketConnection != nil {
-			webSocketConnection.WriteJSON(*node)
+		webSocketConnections := webSocket.GetWebSocketConnection()
+		if webSocketConnections != nil {
+			for _, webSocCon := range webSocketConnections {
+				webSocCon.WriteJSON(*node)
+			}
 		}
 		c.String(http.StatusAccepted, command)
 	}

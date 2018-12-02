@@ -15,6 +15,7 @@ var upGrader = websocket.Upgrader{
 	},
 }
 
+var webSocketConns = make([]*websocket.Conn, 0)
 var webSocketConn *websocket.Conn
 
 func WsHandshake(c *gin.Context) {
@@ -24,13 +25,14 @@ func WsHandshake(c *gin.Context) {
 func WsHandler(w http.ResponseWriter, r *http.Request) {
 
 	var err error
-	webSocketConn, err = upGrader.Upgrade(w, r, nil)
+	webSocketConn, err := upGrader.Upgrade(w, r, nil)
+	webSocketConns = append(webSocketConns, webSocketConn)
 	if err != nil {
 		log.Printf("Failed to set websocket upgrade: %+v", err)
 		return
 	}
 }
 
-func GetWebSocketConnection() *websocket.Conn {
-	return webSocketConn
+func GetWebSocketConnection() []*websocket.Conn {
+	return webSocketConns
 }
