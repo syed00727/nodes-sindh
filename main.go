@@ -30,12 +30,7 @@ func main() {
 
 	router.Use(gin.Logger())
 	router.Use(static.Serve("/", static.LocalFile(".", true)))
-	//router.LoadHTMLFiles("index.html")
-	//router.Static("/static", "./static")
-	//
-	//router.GET("/", func(context *gin.Context) {
-	//	context.HTML(http.StatusOK, "index.html", gin.H{})
-	//})
+
 
 	//APIs for module
 	router.POST("/node/status/:status", module.PostNodeStatus)

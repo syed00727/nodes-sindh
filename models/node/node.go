@@ -8,7 +8,8 @@ import (
 
 type New struct {
 	Id                 int
-	Power              int
+	Switch1            int
+	Switch2 			   int
 	Ping               time.Time
 	Status             byte
 	BatteryVoltage     float64

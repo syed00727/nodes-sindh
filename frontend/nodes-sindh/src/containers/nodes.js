@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchNodes, fetchNodeDetail } from '../actions/nodes';
-import { AppBar, CircularProgress, withStyles, Select } from '@material-ui/core';
+import { AppBar, CircularProgress, withStyles, Select, Toolbar, Typography } from '@material-ui/core';
 
 const styles = {
-    root: { margin: '3px', padding: '3px', display: 'grid', gridTemplateColumns: '50% 50%' ,gridGap : '5px 15px' }
+    
+    typo: {
+        color: 'white'
+    }
 }
 
 class NodeList extends Component {
@@ -15,14 +18,14 @@ class NodeList extends Component {
         this.updateChoice = this.updateChoice.bind(this)
     }
 
-    componentDidUpdate = (prevProps) => {
-        const { nodes } = this.props;
+    // componentDidUpdate = (prevProps) => {
+    //     const { nodes } = this.props;
 
-        if (nodes !== null && (prevProps.nodes === null || nodes.length !== prevProps.nodes.length)) {
-            this.props.fetchDetail(nodes[0])
-        }
+    //     if (nodes !== null && (prevProps.nodes === null || nodes.length !== prevProps.nodes.length)) {
+    //         this.props.fetchDetail(nodes[0])
+    //     }
 
-    }
+    // }
 
     updateChoice = (event) => {
         let nodeId = event.target.value;
@@ -32,18 +35,12 @@ class NodeList extends Component {
         const { nodes, classes } = this.props;
 
         return <div>
-            <AppBar color='secondary' position='static' className={classes.root}>
-                <div>Nodes </div>
-                {/* {nodes === null ? <CircularProgress /> :
-                    <select onChange={this.updateChoice}>
-                        {
-                            this.props.nodes.sort().map(i => {
-                                return <option key={`node_id_${i}`}>{i}</option>
-                            })
-                        }
-                    </select>
-                } */}
-                <div> The styling is under development. Ignore hiccups </div>
+            <AppBar color='secondary' position='static' >
+                <Toolbar>
+                    <Typography component='h4' variant='title' color='textPrimary' className={classes.typo}>
+                        Power Management Unit for Smart Distribution and Consumption
+                     </Typography>
+                </Toolbar>
             </AppBar>
         </div>
     }
@@ -58,7 +55,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshNodes: () => dispatch(fetchNodes()),
-        fetchDetail: id => dispatch(fetchNodeDetail(id))
+        // fetchDetail: id => dispatch(fetchNodeDetail(id))
     }
 }
 

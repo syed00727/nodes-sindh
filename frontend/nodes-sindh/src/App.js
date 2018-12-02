@@ -24,7 +24,6 @@ class App extends Component {
         <div >
           <NodeListContainer />
           <Route exact path="/" component={DetailGrid} />
-          <Route path="/node/:nodeId" component={NodeFullPage} />
         </div>
       </div>
     );

@@ -7,6 +7,8 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/heroku/go-getting-started/models/node"
 	"log"
+	"time"
+	"github.com/robfig/cron"
 )
 
 var db *sql.DB
@@ -35,6 +37,14 @@ func init() {
 	}
 
 	log.Println("Connection to Database successful")
+	c := cron.New()
+	c.AddFunc("@hourly", scheduledFlush)
+	c.Start()
+}
+
+func scheduledFlush()  {
+	db.Exec("delete from node_pings where ping_time::date < $1", time.Now().Local().Format("2018-10-23"))
+	log.Printf("Scheduled task was run @ %s", time.Now().Local())
 }
 
 func GetLastPing(id int) (node.New, error) {
@@ -49,8 +59,9 @@ func GetLastPing(id int) (node.New, error) {
 		"power_grid_to_battery,"+
 		"power_battery_to_load,"+
 		"grid_voltage,"+
-		"power,"+
-		"voltage_limit from node_pings "+
+		"switch_1," +
+		"switch_2,"+
+		"limit_1 from node_pings "+
 		"left join voltage_limit on voltage_limit.id = node_pings.id "+
 		"where node_pings.id = $1 "+
 		"order by ping_time desc", id)
@@ -64,7 +75,7 @@ func GetLastPing(id int) (node.New, error) {
 		&ping.PowerGridToBattery,
 		&ping.PowerBatteryToLoad,
 		&ping.GridVoltage,
-		&ping.Power,
+		&ping.Switch1,
 		&ping.VoltageLimit)
 
 	return ping, e
@@ -72,7 +83,7 @@ func GetLastPing(id int) (node.New, error) {
 }
 
 func UpdateNodeStatus(n node.New) error {
-	_, e := db.Exec("insert into node_pings(id, ping_time, status, battery_voltage,power_solar_input,power_battery_to_grid,power_grid_to_battery,power_battery_to_load,grid_voltage, power) values ($1, $2, $3, $4, $5, $6, $7,$8,$9,$10)", n.Id, n.Ping, n.Status, n.BatteryVoltage, n.PowerSolarInput, n.PowerBatteryToGrid, n.PowerGridToBattery, n.PowerBatteryToLoad, n.GridVoltage, n.Power)
+	_, e := db.Exec("insert into node_pings(id, ping_time, status, battery_voltage,power_solar_input,power_battery_to_grid,power_grid_to_battery,power_battery_to_load,grid_voltage, switch_1) values ($1, $2, $3, $4, $5, $6, $7,$8,$9,$10)", n.Id, n.Ping, n.Status, n.BatteryVoltage, n.PowerSolarInput, n.PowerBatteryToGrid, n.PowerGridToBattery, n.PowerBatteryToLoad, n.GridVoltage, n.Switch1)
 	return e
 }
 
@@ -95,9 +106,9 @@ func GetLastPingForAllNodes() ([]node.New, error) {
 
 	pingList := make([]node.New, 0)
 	rows, e := db.Query("with ranked_messages as " +
-		"(select id,ping_time,status,battery_voltage,power_solar_input,power_battery_to_grid,power_grid_to_battery,power_battery_to_load,grid_voltage, power ,rank() over (partition by id order by ping_time desc) as rn " +
+		"(select id,ping_time,status,battery_voltage,power_solar_input,power_battery_to_grid,power_grid_to_battery,power_battery_to_load,grid_voltage, switch_1 ,rank() over (partition by id order by ping_time desc) as rn " +
 		"from node_pings) " +
-		"select ranked_messages.id,ping_time,status,battery_voltage,power_solar_input,power_battery_to_grid,power_grid_to_battery,power_battery_to_load,grid_voltage,power,voltage_limit from ranked_messages " +
+		"select ranked_messages.id,ping_time,status,battery_voltage,power_solar_input,power_battery_to_grid,power_grid_to_battery,power_battery_to_load,grid_voltage,switch_1,limit_1 from ranked_messages " +
 		"left join voltage_limit on voltage_limit.id = ranked_messages.id " +
 		"where rn = 1")
 	if e != nil {
@@ -105,7 +116,7 @@ func GetLastPingForAllNodes() ([]node.New, error) {
 	}
 	var latestPing node.New
 	for rows.Next() {
-		if e := rows.Scan(&latestPing.Id, &latestPing.Ping, &latestPing.Status, &latestPing.BatteryVoltage, &latestPing.PowerSolarInput, &latestPing.PowerBatteryToGrid, &latestPing.PowerGridToBattery, &latestPing.PowerBatteryToLoad, &latestPing.GridVoltage, &latestPing.Power, &latestPing.VoltageLimit); e == nil {
+		if e := rows.Scan(&latestPing.Id, &latestPing.Ping, &latestPing.Status, &latestPing.BatteryVoltage, &latestPing.PowerSolarInput, &latestPing.PowerBatteryToGrid, &latestPing.PowerGridToBattery, &latestPing.PowerBatteryToLoad, &latestPing.GridVoltage, &latestPing.Switch1, &latestPing.VoltageLimit); e == nil {
 			pingList = append(pingList, latestPing)
 		} else {
 			break
@@ -138,7 +149,7 @@ func getNodeList(rows *sql.Rows) (nodeList []node.New, err error) {
 	pingList := make([]node.New, 0)
 	var ping node.New
 	for rows.Next() {
-		if err = rows.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.BatteryVoltage, &ping.PowerSolarInput, &ping.PowerBatteryToGrid, &ping.PowerGridToBattery, &ping.PowerBatteryToLoad, &ping.GridVoltage, &ping.Power); err == nil {
+		if err = rows.Scan(&ping.Id, &ping.Ping, &ping.Status, &ping.BatteryVoltage, &ping.PowerSolarInput, &ping.PowerBatteryToGrid, &ping.PowerGridToBattery, &ping.PowerBatteryToLoad, &ping.GridVoltage, &ping.Switch1); err == nil {
 			pingList = append(pingList, ping)
 		} else {
 			break

@@ -11,6 +11,8 @@ import grey from '@material-ui/core/colors/grey'
 import PinStatus from '../presentational/pinStatus'
 import { Link } from 'react-router-dom'
 import CommandPanel from '../presentational/commandPanel';
+import Block from '../presentational/numericBlock'
+import ValuesGrid from '../presentational/valuesGrid';
 
 const Voltage = (props) => {
 
@@ -30,9 +32,8 @@ const styles = {
         padding: 3
     },
     card: {
-        minWidth: 275,
-        width: 300,
-        padding: 10
+        padding: 10,
+        maxWidth: 300
     },
     dot: {
         height: 15,
@@ -64,6 +65,9 @@ const formatFloat = num => {
     return Math.round(num * 100 / 100)
 }
 
+
+
+
 class Detail extends Component {
 
     state = {
@@ -75,9 +79,9 @@ class Detail extends Component {
         this.state = {}
     }
     toggleNodePower = () => {
-        let powerBit = this.props.detail.Power === 1 ? 0 : 1
-        let command = `${powerBit}00000000`
-        this.props.sendCommand(command, this.props.detail.Id)
+        // let powerBit = this.props.detail.Power === 1 ? 0 : 1
+        // let command = `${powerBit}00000000`
+        // this.props.sendCommand(command, this.props.detail.Id)
     }
 
     openDialog = () => {
@@ -95,14 +99,15 @@ class Detail extends Component {
             )
         }
         const date = dayjs(detail.Ping)
-        const powerStatus = detail.Power === 0 ? red[500] : green[500]
+        // const powerStatus = detail.Power === 0 ? red[500] : green[500]
         return <div className={classes.detail}>
             <Card className={classes.card}>
                 <div >
                     <div className={classes.cardheader}>
-                        <span style={{ ...styles.dot, backgroundColor: powerStatus }} ></span>
+                        {/* <span style={{ ...styles.dot, backgroundColor: powerStatus }} ></span> */}
                         <Typography variant="headline" component="h2">
-                            <Link to={`/node/${detail.Id}`} >Node {detail.Id}</Link>
+                            {/* <Link to={`/node/${detail.Id}`} >Node {detail.Id}</Link> */}
+                            PMU {detail.Id}
                         </Typography>
                         <Button onClick={this.openDialog}>Send Command</Button>
                     </div>
@@ -113,21 +118,25 @@ class Detail extends Component {
                 </div>
 
                 <CardContent className={classes.cardContent}>
-                    <p><Voltage detail={detail} /></p>
-                    <p>Solar Input: {Math.round(detail.PowerSolarInput * 100) / 100} W</p>
-                    <p>Battery to Grid  :{formatFloat(detail.PowerBatteryToGrid)} W</p>
-                    <p>Grid to Battery  : {formatFloat(detail.PowerGridToBattery)} W</p>
-                    <p> Battery to Load : {formatFloat(detail.PowerBatteryToLoad)} W</p>
-                    <p> Grid Voltage : {formatFloat(detail.GridVoltage)} V</p>
-                    <PinStatus pinStatus={detail.Status} />
+                    <ValuesGrid>
+                        <Block title={`Battery Voltage`} num={formatFloat(detail.BatteryVoltage)} dim='V' />
+                        <Block title={` Grid Voltage`} num={formatFloat(detail.GridVoltage)} dim='V' />
+                        <Block title={`Battery to Grid`} num={formatFloat(detail.PowerBatteryToGrid)} dim='W' />
+                        <Block title={`Grid to Battery`} num={formatFloat(detail.PowerGridToBattery)} dim='W' />
+                        <Block title={`Battery to Load`} num={formatFloat(detail.PowerBatteryToLoad)} dim='W' />
+
+
+                    </ValuesGrid>
+                    {/* <PinStatus pinStatus={detail.Status} /> */}
                 </CardContent>
             </Card>
             <Dialog fullWidth open={this.state.dialogOpen} onClose={this.closeDialog}>
-                <CommandPanel nodeId={detail.Id} commandFunc={this.props.sendCommand}/>
+                <CommandPanel nodeId={detail.Id} commandFunc={this.props.sendCommand} />
             </Dialog>
         </div>
     }
 }
+
 
 const mapStateToProps = state => {
     return {
@@ -138,7 +147,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         sendCommand: (command, node) => dispatch(sendCommand(command, node)),
-        fetchDetail: id => dispatch(fetchNodeDetail(id))
+        // fetchDetail: id => dispatch(fetchNodeDetail(id))
 
     }
 }

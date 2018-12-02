@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Switch, FormControlLabel, TextField, Grid, Button } from '@material-ui/core';
+import { withStyles, Switch, FormControlLabel, TextField, Button } from '@material-ui/core';
 
 const styles = theme => ({
     root: {
@@ -40,7 +40,7 @@ class CommandPanel extends Component {
                     <FormControlLabel
                         root={classes.formControlLabel}
                         label='Switch 1'
-                        checked={this.state.switch1 == 1}
+                        checked={this.state.switch1 === 1}
                         onChange={this.handleStatusChange('switch1')}
                         control={
                             <Switch />
@@ -49,7 +49,7 @@ class CommandPanel extends Component {
                     <FormControlLabel
                         root={classes.formControlLabel}
                         label='Switch 2'
-                        checked={this.state.switch2 == 1}
+                        checked={this.state.switch2 === 1}
                         onChange={this.handleStatusChange('switch2')}
                         control={
                             <Switch />

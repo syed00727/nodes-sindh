@@ -1,8 +1,8 @@
-import { CircularProgress, withStyles } from '@material-ui/core';
+import { CircularProgress, withStyles, Typography } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Detail from './detail';
-
+import styled from 'styled-components'
 
 const styles = {
 
@@ -14,14 +14,36 @@ const styles = {
 
     }
 }
+const Empty = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
 
+ `;
 
 class DetailGrid extends Component {
 
     render() {
         const { detail, classes } = this.props;
-        if (detail.size === 0) {
-            return <CircularProgress />
+        if (detail === null) {
+            return (
+                <Empty>
+                    <Typography variant='display1' component='h6'>
+                    Loading data 
+                    </Typography>
+                    <CircularProgress/>
+                </Empty>
+            )
+        }
+        if (detail.length === 0) {
+            return (
+                <Empty>
+                    <Typography variant='display1' component='h6'>
+                        No Data found
+                    </Typography>
+                </Empty>
+            )
         }
         return <div className={classes.grid}>
             {
@@ -36,7 +58,7 @@ class DetailGrid extends Component {
 
 const mapStateToProps = state => {
     return {
-        detail: state.detail.valueSeq().toArray() /* converting the immutable map to an array with only its values */
+        detail: state.detail === null ? null : state.detail.valueSeq().toArray() /* converting the immutable map to an array with only its values */
     }
 }
 

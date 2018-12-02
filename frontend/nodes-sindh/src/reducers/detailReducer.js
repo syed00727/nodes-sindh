@@ -4,11 +4,11 @@ import { UPDATE_ALL_NODE_DETAILS, UPDATE_NODE_DETAIL } from "../actions/nodes";
 export const detail = (state = Map(), action) => {
     switch (action.type) {
         case UPDATE_NODE_DETAIL:
-            return state.set(action.payload.Id, action.payload);
+            return state === null ? generateMap([action.payload]) : state.set(action.payload.Id, action.payload);
         case UPDATE_ALL_NODE_DETAILS:
-            return state.merge(generateMap(action.payload))
+            return state === null ? generateMap(action.payload) : state.merge(generateMap(action.payload))
         default:
-            return state;
+            return null;
 
     }
 }

@@ -57,14 +57,15 @@ if (module.hot) {
 
 renderApp()
 
-interval(3000)
-  .pipe(
-    map(
-      () => store.dispatch(fetchNodes())
-    )
-    , take(1)
-  )
-  .subscribe();
+// fetching just Ids is no longer required
+// interval(3000)
+//   .pipe(
+//     map(
+//       () => store.dispatch(fetchNodes())
+//     )
+//     , take(1)
+//   )
+//   .subscribe();
 
 interval(3000)
   .pipe(
