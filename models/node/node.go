@@ -9,11 +9,14 @@ import (
 type New struct {
 	Id                 int
 	Switch1            int
-	Switch2 			   int
+	Switch2            int
 	Ping               time.Time
 	Status             byte
 	BatteryVoltage     float64
-	VoltageLimit       sql.NullFloat64
+	Limit1             sql.NullFloat64
+	Limit2             sql.NullFloat64
+	Limit3             sql.NullFloat64
+	Limit4             sql.NullFloat64
 	PowerSolarInput    float64
 	PowerBatteryToGrid float64
 	PowerGridToBattery float64

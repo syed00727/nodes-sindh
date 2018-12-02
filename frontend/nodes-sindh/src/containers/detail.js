@@ -43,8 +43,8 @@ const styles = {
 
     },
     cardheader: {
-        display: 'grid',
-        gridTemplateColumns: '10% 40% 50%',
+        display: 'flex',
+        flexDirection: 'row',
         alignItems: 'center'
     },
     node: {
@@ -58,6 +58,9 @@ const styles = {
     },
     dialog: {
         maxWidth: 800
+    },
+    title: {
+        flexGrow: 1
     }
 
 };
@@ -105,7 +108,7 @@ class Detail extends Component {
                 <div >
                     <div className={classes.cardheader}>
                         {/* <span style={{ ...styles.dot, backgroundColor: powerStatus }} ></span> */}
-                        <Typography variant="headline" component="h2">
+                        <Typography variant="headline" component="h2" className={classes.title}>
                             {/* <Link to={`/node/${detail.Id}`} >Node {detail.Id}</Link> */}
                             PMU {detail.Id}
                         </Typography>
