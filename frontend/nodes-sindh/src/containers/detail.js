@@ -14,16 +14,16 @@ import CommandPanel from '../presentational/commandPanel';
 import Block from '../presentational/numericBlock'
 import ValuesGrid from '../presentational/valuesGrid';
 
-const Voltage = (props) => {
+// const Voltage = (props) => {
 
-    const detail = props.detail;
-    let isAboveLimit = detail.VoltageLimit.Valid && detail.VoltageLimit.Float64 < detail.Voltage
-    return <span>
-        Battery Voltage: <span style={{ color: isAboveLimit ? red[900] : green[900] }} > {Math.round(detail.BatteryVoltage * 100) / 100} V </span>
-        <span style={{ fontSize: 11, color: grey[800] }} > {detail.VoltageLimit.Valid ? `limit: ${(Math.round(detail.VoltageLimit.Float64 * 100) / 100)} V` : ``}
-        </span>
-    </span>
-}
+//     const detail = props.detail;
+//     let isAboveLimit = detail.VoltageLimit.Valid && detail.VoltageLimit.Float64 < detail.Voltage
+//     return <span>
+//         Battery Voltage: <span style={{ color: isAboveLimit ? red[900] : green[900] }} > {Math.round(detail.BatteryVoltage * 100) / 100} V </span>
+//         <span style={{ fontSize: 11, color: grey[800] }} > {detail.VoltageLimit.Valid ? `limit: ${(Math.round(detail.VoltageLimit.Float64 * 100) / 100)} V` : ``}
+//         </span>
+//     </span>
+// }
 
 dayjs.extend(relativeTime)
 const styles = {
@@ -134,7 +134,15 @@ class Detail extends Component {
                 </CardContent>
             </Card>
             <Dialog fullWidth open={this.state.dialogOpen} onClose={this.closeDialog}>
-                <CommandPanel nodeId={detail.Id} commandFunc={this.props.sendCommand} />
+                <CommandPanel nodeId={detail.Id} 
+                commandFunc={this.props.sendCommand} 
+                switch1={detail.Switch1} 
+                switch2={detail.Switch2} 
+                powerLimit1={detail.Limit1.Float64}
+                powerLimit2={detail.Limit2.Float64}
+                powerLimit3={detail.Limit3.Float64}
+                powerLimit4={detail.Limit4.Float64}
+                />
             </Dialog>
         </div>
     }

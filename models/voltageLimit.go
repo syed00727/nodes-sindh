@@ -1,5 +1,5 @@
 package models
 
 type VoltageLimit struct {
-	Limit float32
+	Limit float64
 }

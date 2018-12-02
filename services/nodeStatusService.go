@@ -58,6 +58,12 @@ func SaveNodeCommand(command string, id int) error {
 	if e != nil {
 		return e
 	}
+	split := strings.Split(command, "|")
+	limit1, e := strconv.ParseFloat(split[2], 64)
+	limit2, e := strconv.ParseFloat(split[3], 64)
+	limit3, e := strconv.ParseFloat(split[4], 64)
+	limit4, e := strconv.ParseFloat(split[5], 64)
+	repos.SetVoltageLimit(id, limit1, limit2, limit3, limit4)
 	return nil
 }
 

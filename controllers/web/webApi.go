@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"github.com/heroku/go-getting-started/services"
 	"github.com/gin-gonic/gin"
-	"encoding/json"
 	"github.com/heroku/go-getting-started/models"
 )
 
@@ -100,18 +99,18 @@ func GetVoltageLimit(c *gin.Context) {
 
 func SetVoltageLimit(c *gin.Context) {
 
-	id, eP := strconv.Atoi(c.Param("id"))
-	if eP != nil {
-		c.JSON(http.StatusBadRequest, nil)
-		return
-	}
-	limit := models.VoltageLimit{}
-	json.NewDecoder(c.Request.Body).Decode(&limit)
-	e := services.SetVoltageLimit(id, limit.Limit)
-	if e != nil {
-		c.JSON(http.StatusInternalServerError, nil)
-		return
-	}
+	//id, eP := strconv.Atoi(c.Param("id"))
+	//if eP != nil {
+	//	c.JSON(http.StatusBadRequest, nil)
+	//	return
+	//}
+	//limit := models.VoltageLimit{}
+	//json.NewDecoder(c.Request.Body).Decode(&limit)
+	//e := services.SetVoltageLimit(id, limit.Limit)
+	//if e != nil {
+	//	c.JSON(http.StatusInternalServerError, nil)
+	//	return
+	//}
 	c.JSON(http.StatusOK, nil)
 
 }

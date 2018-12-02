@@ -1,7 +1,7 @@
 import { ofType } from "redux-observable";
 import { ajax } from 'rxjs/ajax';
 import { map, mergeMap } from "rxjs/operators";
-import { commandResponse, fetchNodeDetail, FETCH_ALL_NODE_DETAILS, FETCH_NODES, FETCH_NODE_DETAIL, SEND_COMMAND, updateNodeDetail, updateNodes, updateAllNodeDetails, FETCH_NODE_HISTORY, updateNodeHistory, UPDATE_NODE_DETAIL, addToHistory } from "../actions/nodes";
+import { commandResponse, fetchNodeDetail, FETCH_ALL_NODE_DETAILS, FETCH_NODES, FETCH_NODE_DETAIL, SEND_COMMAND, updateNodeDetail, updateNodes, updateAllNodeDetails, FETCH_NODE_HISTORY, updateNodeHistory,fetchAllNodeDetails ,UPDATE_NODE_DETAIL, addToHistory } from "../actions/nodes";
 
 
 const HOST = `https://nodes-sindh.herokuapp.com`
@@ -36,7 +36,7 @@ export const sendCommandEpic = action$ =>
                 `${HOST}/api/node/command/${action.payload.command}?id=${action.payload.id}`)
                 .pipe(map(res =>
                     commandResponse(res)
-                ), map(() => fetchNodeDetail(action.payload.id))
+                ), map(() => fetchAllNodeDetails())
                 )
     )
     )
