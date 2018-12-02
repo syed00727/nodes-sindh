@@ -37,7 +37,7 @@ class CommandPanel extends Component {
     }
 
     handleSubmit = () => {
-        let command = `${this.state.switch1}|${this.state.switch2}|${this.state.powerLimit1}|${this.state.powerLimit2}|${this.state.powerLimit3}|${this.state.powerLimit4}`
+        let command = `${this.state.switch1}|${this.state.switch2}|${this.state.powerLimit1}|${this.state.powerLimit2}|${this.state.loadSwitch1}|${this.state.loadSwitch2}|${this.state.loadSwitch3}|${this.state.loadSwitch4}`
         this.props.commandFunc(command, this.props.nodeId)
     }
     render() {
