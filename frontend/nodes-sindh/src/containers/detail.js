@@ -135,6 +135,10 @@ class Detail extends Component {
                         commandFunc={this.props.sendCommand}
                         switch1={detail.Switch1}
                         switch2={detail.Switch2}
+                        loadSwitch1 = {detail.LoadSwitch1}
+                        loadSwitch2 = {detail.LoadSwitch2}
+                        loadSwitch3 = {detail.LoadSwitch3}
+                        loadSwitch4 = {detail.LoadSwitch4}
                         powerLimit1={detail.Limit1.Float64}
                         powerLimit2={detail.Limit2.Float64}
                         powerLimit3={detail.Limit3.Float64}

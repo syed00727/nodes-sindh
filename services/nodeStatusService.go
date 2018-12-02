@@ -31,7 +31,7 @@ func GetCommandForNode(nodeId int) (commandStr string, err error) {
 }
 
 /*
-"battery voltage | status | power solar | power battery to grid | power grid to battery |  power battery to load | grid voltage | switch_1 |  switch_2" */
+"battery voltage | status | power solar | power battery to grid | power grid to battery |  power battery to load | grid voltage | switch_1 |  switch_2 | load_switch_1 | load_switch_2 | load_switch_3 | load_switch_4 " */
 
 func populateNode(statusStr string) node.New {
 	split := strings.Split(statusStr, "|")
@@ -45,11 +45,16 @@ func populateNode(statusStr string) node.New {
 	gridVoltage, e := strconv.ParseFloat(split[7], 64)
 	switch1, e := strconv.Atoi(split[8])
 	switch2, e := strconv.Atoi(split[9])
+	loadSwitch1, e := strconv.Atoi(split[10])
+	loadSwitch2, e := strconv.Atoi(split[11])
+	loadSwitch3, e := strconv.Atoi(split[12])
+	loadSwitch4, e := strconv.Atoi(split[13])
+
 	if e != nil {
 		return node.New{}
 	}
 
-	return node.New{Switch1: switch1, Ping: time.Now(), Status: status, BatteryVoltage: batteryVoltage, PowerBatteryToLoad: powerBatteryToLoad, PowerGridToBattery: powerGridToBattery, PowerBatteryToGrid: powerBatteryToGrid, Id: id, PowerSolarInput: powerSolarInput, GridVoltage: gridVoltage, Switch2:switch2}
+	return node.New{Switch1: switch1, Ping: time.Now(), Status: status, BatteryVoltage: batteryVoltage, PowerBatteryToLoad: powerBatteryToLoad, PowerGridToBattery: powerGridToBattery, PowerBatteryToGrid: powerBatteryToGrid, Id: id, PowerSolarInput: powerSolarInput, GridVoltage: gridVoltage, Switch2: switch2, LoadSwitch1: loadSwitch1, LoadSwitch2: loadSwitch2, LoadSwitch3: loadSwitch3, LoadSwitch4: loadSwitch4}
 
 }
 

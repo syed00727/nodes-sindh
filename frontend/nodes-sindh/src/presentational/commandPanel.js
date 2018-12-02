@@ -17,6 +17,10 @@ class CommandPanel extends Component {
     state = {
         switch1: this.props.switch1,
         switch2: this.props.switch2,
+        loadSwitch1: this.props.loadSwitch1,
+        loadSwitch2: this.props.loadSwitch2,
+        loadSwitch3: this.props.loadSwitch3,
+        loadSwitch4: this.props.loadSwitch4,
         powerLimit1: this.props.powerLimit1,
         powerLimit2: this.props.powerLimit2,
         powerLimit3: this.props.powerLimit3,
@@ -58,6 +62,40 @@ class CommandPanel extends Component {
                         control={
                             <Switch />
                         } />
+                    <FormControlLabel
+                        root={classes.formControlLabel}
+                        label='Load Switch 1'
+                        checked={this.state.loadSwitch1 === 1}
+                        onChange={this.handleStatusChange('loadSwitch1')}
+                        control={
+                            <Switch />
+                        } />
+
+                    <FormControlLabel
+                        root={classes.formControlLabel}
+                        label='Load Switch 2'
+                        checked={this.state.loadSwitch2 === 1}
+                        onChange={this.handleStatusChange('loadSwitch2')}
+                        control={
+                            <Switch />
+                        } />
+                    <FormControlLabel
+                        root={classes.formControlLabel}
+                        label='Load Switch 3'
+                        checked={this.state.loadSwitch3 === 1}
+                        onChange={this.handleStatusChange('loadSwitch3')}
+                        control={
+                            <Switch />
+                        } />
+
+                    <FormControlLabel
+                        root={classes.formControlLabel}
+                        label='Load Switch 4'
+                        checked={this.state.loadSwitch4 === 1}
+                        onChange={this.handleStatusChange('loadSwitch4')}
+                        control={
+                            <Switch />
+                        } />
 
                     <TextField
                         id="power-limit-1"
@@ -72,7 +110,7 @@ class CommandPanel extends Component {
                         value={this.state.powerLimit2}
                         onChange={this.handlePowerLimitChange('powerLimit2')}
                     />
-                   
+
 
 
                 </div>

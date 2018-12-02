@@ -10,6 +10,10 @@ type New struct {
 	Id                 int
 	Switch1            int
 	Switch2            int
+	LoadSwitch1 	       int
+	LoadSwitch2 	       int
+	LoadSwitch3 	       int
+	LoadSwitch4 	       int
 	Ping               time.Time
 	Status             byte
 	BatteryVoltage     float64
