@@ -36,6 +36,23 @@ class CommandPanel extends Component {
         this.setState({ [name]: event.target.value })
     }
 
+    componentDidUpdate = (prevProps) => {
+        if (prevProps !== this.props) {
+            this.setState({
+                switch1: this.props.switch1,
+                switch2: this.props.switch2,
+                loadSwitch1: this.props.loadSwitch1,
+                loadSwitch2: this.props.loadSwitch2,
+                loadSwitch3: this.props.loadSwitch3,
+                loadSwitch4: this.props.loadSwitch4,
+                powerLimit1: this.props.powerLimit1,
+                powerLimit2: this.props.powerLimit2,
+                powerLimit3: this.props.powerLimit3,
+                powerLimit4: this.props.powerLimit4
+            })
+        }
+    }
+
     handleSubmit = () => {
         let command = `${this.state.switch1}|${this.state.switch2}|${this.state.powerLimit1}|${this.state.powerLimit2}|${this.state.loadSwitch1}|${this.state.loadSwitch2}|${this.state.loadSwitch3}|${this.state.loadSwitch4}`
         this.props.commandFunc(command, this.props.nodeId)

@@ -1,7 +1,7 @@
+import { AppBar, Toolbar, Typography, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchNodes, fetchNodeDetail } from '../actions/nodes';
-import { AppBar, CircularProgress, withStyles, Select, Toolbar, Typography } from '@material-ui/core';
+import { fetchNodes } from '../actions/nodes';
 
 const styles = {
     

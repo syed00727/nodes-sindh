@@ -1,17 +1,12 @@
-import { CardContent, Typography, withStyles, CircularProgress, Switch, Button, Dialog } from '@material-ui/core';
+import { CardContent, CircularProgress, Typography, withStyles } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchNodeDetail, sendCommand } from '../actions/nodes';
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
-import grey from '@material-ui/core/colors/grey'
-import PinStatus from '../presentational/pinStatus'
-import { Link } from 'react-router-dom'
+import { sendCommand } from '../actions/nodes';
 import CommandPanel from '../presentational/commandPanel';
-import Block from '../presentational/numericBlock'
+import Block from '../presentational/numericBlock';
 import ValuesGrid from '../presentational/valuesGrid';
 
 // const Voltage = (props) => {
@@ -135,10 +130,10 @@ class Detail extends Component {
                         commandFunc={this.props.sendCommand}
                         switch1={detail.Switch1}
                         switch2={detail.Switch2}
-                        loadSwitch1 = {detail.LoadSwitch1}
-                        loadSwitch2 = {detail.LoadSwitch2}
-                        loadSwitch3 = {detail.LoadSwitch3}
-                        loadSwitch4 = {detail.LoadSwitch4}
+                        loadSwitch1={detail.LoadSwitch1}
+                        loadSwitch2={detail.LoadSwitch2}
+                        loadSwitch3={detail.LoadSwitch3}
+                        loadSwitch4={detail.LoadSwitch4}
                         powerLimit1={detail.Limit1.Float64}
                         powerLimit2={detail.Limit2.Float64}
                         powerLimit3={detail.Limit3.Float64}
@@ -147,7 +142,7 @@ class Detail extends Component {
                     {/* <PinStatus pinStatus={detail.Status} /> */}
                 </CardContent>
             </Card>
-           
+
         </div>
     }
 }
