@@ -53,8 +53,8 @@ func populateNode(statusStr string) node.New {
 	limit1, limit2, e := repos.GetVoltageLimit(id)
 	var limit1SqlNF64 sql.NullFloat64
 	var limit2SqlNF64 sql.NullFloat64
-	_ = limit1SqlNF64.Scan(&limit1)
-	_ = limit2SqlNF64.Scan(&limit2)
+	_ = limit1SqlNF64.Scan(limit1)
+	_ = limit2SqlNF64.Scan(limit2)
 	if e != nil {
 		return node.New{}
 	}
