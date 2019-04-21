@@ -88,13 +88,13 @@ func GetVoltageLimit(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, nil)
 		return
 	}
-	limit, e := services.GetVoltageLimit(id)
+	limit1, limit2, e := services.GetVoltageLimit(id)
 	if e != nil {
 		c.JSON(http.StatusInternalServerError, nil)
 		return
 	}
 
-	c.JSON(http.StatusOK, models.VoltageLimit{limit})
+	c.JSON(http.StatusOK, models.VoltageLimit{limit1, limit2})
 }
 
 func SetVoltageLimit(c *gin.Context) {

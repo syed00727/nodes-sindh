@@ -1,11 +1,12 @@
 package services
 
 import (
+	"database/sql"
 	"github.com/heroku/go-getting-started/models/node"
 	"github.com/heroku/go-getting-started/repos"
-	"strings"
-	"strconv"
 	"github.com/heroku/go-getting-started/utils"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -49,12 +50,16 @@ func populateNode(statusStr string) node.New {
 	loadSwitch2, e := strconv.Atoi(split[11])
 	loadSwitch3, e := strconv.Atoi(split[12])
 	loadSwitch4, e := strconv.Atoi(split[13])
-
+	limit1, limit2, e := repos.GetVoltageLimit(id)
+	var limit1SqlNF64 sql.NullFloat64
+	var limit2SqlNF64 sql.NullFloat64
+	_ = limit1SqlNF64.Scan(&limit1)
+	_ = limit2SqlNF64.Scan(&limit2)
 	if e != nil {
 		return node.New{}
 	}
 
-	return node.New{Switch1: switch1, Ping: time.Now(), Status: status, BatteryVoltage: batteryVoltage, PowerBatteryToLoad: powerBatteryToLoad, PowerGridToBattery: powerGridToBattery, PowerBatteryToGrid: powerBatteryToGrid, Id: id, PowerSolarInput: powerSolarInput, GridVoltage: gridVoltage, Switch2: switch2, LoadSwitch1: loadSwitch1, LoadSwitch2: loadSwitch2, LoadSwitch3: loadSwitch3, LoadSwitch4: loadSwitch4}
+	return node.New{Switch1: switch1, Ping: time.Now(), Status: status, BatteryVoltage: batteryVoltage, PowerBatteryToLoad: powerBatteryToLoad, PowerGridToBattery: powerGridToBattery, PowerBatteryToGrid: powerBatteryToGrid, Id: id, PowerSolarInput: powerSolarInput, GridVoltage: gridVoltage, Switch2: switch2, LoadSwitch1: loadSwitch1, LoadSwitch2: loadSwitch2, LoadSwitch3: loadSwitch3, LoadSwitch4: loadSwitch4, Limit1: limit1SqlNF64, Limit2:limit1SqlNF64}
 
 }
 

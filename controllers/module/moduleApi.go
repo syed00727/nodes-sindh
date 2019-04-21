@@ -1,10 +1,10 @@
 package module
 
 import (
-	"net/http"
-	"github.com/heroku/go-getting-started/services"
 	"github.com/gin-gonic/gin"
 	"github.com/heroku/go-getting-started/controllers/webSocket"
+	"github.com/heroku/go-getting-started/services"
+	"net/http"
 )
 
 func PostNodeStatus(c *gin.Context) {
@@ -21,7 +21,7 @@ func PostNodeStatus(c *gin.Context) {
 		webSocketConnections := webSocket.GetWebSocketConnection()
 		if webSocketConnections != nil {
 			for _, webSocCon := range webSocketConnections {
-				webSocCon.WriteJSON(*node)
+				_ = webSocCon.WriteJSON(*node)
 			}
 		}
 		c.String(http.StatusAccepted, command)

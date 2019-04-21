@@ -5,10 +5,11 @@ import (
 	"github.com/heroku/go-getting-started/repos/inMemory"
 )
 
-func GetVoltageLimit(nodeId int) (float64, error) {
+func GetVoltageLimit(nodeId int) (float64, float64, error) {
 	limit, found := inMemory.GetVoltageLimit(nodeId)
 	if found{
-		return limit, nil
+		// api will doesnot return limit 2
+		return limit, 0.0, nil
 	}
 	return repos.GetVoltageLimit(nodeId)
 }
