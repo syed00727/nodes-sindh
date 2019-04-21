@@ -59,7 +59,7 @@ func populateNode(statusStr string) node.New {
 		return node.New{}
 	}
 
-	return node.New{Switch1: switch1, Ping: time.Now(), Status: status, BatteryVoltage: batteryVoltage, PowerBatteryToLoad: powerBatteryToLoad, PowerGridToBattery: powerGridToBattery, PowerBatteryToGrid: powerBatteryToGrid, Id: id, PowerSolarInput: powerSolarInput, GridVoltage: gridVoltage, Switch2: switch2, LoadSwitch1: loadSwitch1, LoadSwitch2: loadSwitch2, LoadSwitch3: loadSwitch3, LoadSwitch4: loadSwitch4, Limit1: limit1SqlNF64, Limit2:limit1SqlNF64}
+	return node.New{Switch1: switch1, Ping: time.Now(), Status: status, BatteryVoltage: batteryVoltage, PowerBatteryToLoad: powerBatteryToLoad, PowerGridToBattery: powerGridToBattery, PowerBatteryToGrid: powerBatteryToGrid, Id: id, PowerSolarInput: powerSolarInput, GridVoltage: gridVoltage, Switch2: switch2, LoadSwitch1: loadSwitch1, LoadSwitch2: loadSwitch2, LoadSwitch3: loadSwitch3, LoadSwitch4: loadSwitch4, Limit1: limit1SqlNF64, Limit2:limit2SqlNF64}
 
 }
 
