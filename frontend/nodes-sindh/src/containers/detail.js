@@ -60,7 +60,7 @@ const styles = {
 
 };
 const formatFloat = num => {
-    return Math.round(num * 100 / 100)
+    return Math.round(num * 100)/100
 }
 
 
