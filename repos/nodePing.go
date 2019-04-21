@@ -25,6 +25,7 @@ func init() {
 
 		connStr = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, dbPort, dbSchema)
 	} else {
+
 		connStr = fmt.Sprintf("%s?sslmode=require", os.Getenv("DATABASE_URL"))
 	}
 	db, err = sql.Open("postgres", connStr)
@@ -38,13 +39,21 @@ func init() {
 
 	log.Println("Connection to Database successful")
 	c := cron.New()
-	c.AddFunc("@hourly", scheduledFlush)
-	c.Start()
+	err = c.AddFunc("@every 12h", scheduledFlush)
+	if err == nil {
+		c.Start()
+	} else {
+		log.Println("cron job failed", err)
+	}
 }
 
 func scheduledFlush() {
-	db.Exec("delete from node_pings where ping_time::date < $1", time.Now().Local().Truncate(60*time.Minute))
-	log.Printf("Scheduled task was run @ %s", time.Now().Local())
+	_, e := db.Exec("delete from node_pings")
+	if e == nil {
+		log.Printf("Scheduled task was run @ %s", time.Now().Local())
+	} else {
+		log.Println("scheduled task failed to execute", e)
+	}
 }
 
 func GetLastPing(id int) (node.New, error) {
