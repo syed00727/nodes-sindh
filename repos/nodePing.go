@@ -39,7 +39,8 @@ func init() {
 
 	log.Println("Connection to Database successful")
 	c := cron.New()
-	err = c.AddFunc("@every 12h", scheduledFlush)
+	// make this configurable
+	err = c.AddFunc("@every 2h", scheduledFlush)
 	if err == nil {
 		c.Start()
 	} else {
