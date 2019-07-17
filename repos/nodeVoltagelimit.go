@@ -1,5 +1,7 @@
 package repos
 
+import "log"
+
 func SetVoltageLimit(nodeId int, limit_1 float64, limit_2 float64, limit_3 float64, limit_4 float64) error {
 	_, e := db.Exec("insert into voltage_limit(id, limit_1, limit_2, limit_3, limit_4) values($1, $2, $3, $4 ,$5) "+
 		"on conflict(id) do update "+
@@ -18,7 +20,8 @@ func GetVoltageLimit(nodeId int) (float64, float64, error) {
 	var limit2 float64
 	e := row.Scan(&limit1, &limit2)
 	if e != nil {
-		return 0.0, 0.0, e
+		log.Println(e)
+		return 0.0, 0.0, nil
 	}
 	return limit1, limit2, e
 
