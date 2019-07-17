@@ -1,8 +1,8 @@
 package repos
 
 import (
+	"nodes-sindh/github.com/heroku/go-getting-started/models"
 	"time"
-	"github.com/heroku/go-getting-started/models"
 )
 
 func SaveNodeCommand(command string, id int) error {

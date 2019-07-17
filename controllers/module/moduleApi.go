@@ -2,9 +2,9 @@ package module
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/heroku/go-getting-started/controllers/webSocket"
-	"github.com/heroku/go-getting-started/services"
 	"net/http"
+	"nodes-sindh/github.com/heroku/go-getting-started/controllers/webSocket"
+	"nodes-sindh/github.com/heroku/go-getting-started/services"
 )
 
 func PostNodeStatus(c *gin.Context) {

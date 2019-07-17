@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/heroku/go-getting-started/repos"
-	"github.com/heroku/go-getting-started/repos/inMemory"
+	"nodes-sindh/github.com/heroku/go-getting-started/repos"
+	"nodes-sindh/github.com/heroku/go-getting-started/repos/inMemory"
 )
 
 func GetVoltageLimit(nodeId int) (float64, float64, error) {

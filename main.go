@@ -7,11 +7,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/heroku/go-getting-started/controllers/module"
-	"github.com/heroku/go-getting-started/controllers/web"
-	"github.com/heroku/go-getting-started/controllers/webSocket"
 	_ "github.com/heroku/x/hmetrics/onload"
 	"net/http"
+	"nodes-sindh/github.com/heroku/go-getting-started/controllers/module"
+	"nodes-sindh/github.com/heroku/go-getting-started/controllers/web"
+	"nodes-sindh/github.com/heroku/go-getting-started/controllers/webSocket"
 	"time"
 )
 

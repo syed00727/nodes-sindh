@@ -2,9 +2,9 @@ package services
 
 import (
 	"database/sql"
-	"github.com/heroku/go-getting-started/models/node"
-	"github.com/heroku/go-getting-started/repos"
-	"github.com/heroku/go-getting-started/utils"
+	"nodes-sindh/github.com/heroku/go-getting-started/models/node"
+	"nodes-sindh/github.com/heroku/go-getting-started/repos"
+	bintodec "nodes-sindh/github.com/heroku/go-getting-started/utils"
 	"strconv"
 	"strings"
 	"time"

@@ -1,11 +1,11 @@
 package web
 
 import (
-	"strconv"
-	"net/http"
-	"github.com/heroku/go-getting-started/services"
 	"github.com/gin-gonic/gin"
-	"github.com/heroku/go-getting-started/models"
+	"net/http"
+	"nodes-sindh/github.com/heroku/go-getting-started/models"
+	"nodes-sindh/github.com/heroku/go-getting-started/services"
+	"strconv"
 )
 
 func GetNodeStatus(c *gin.Context) {
