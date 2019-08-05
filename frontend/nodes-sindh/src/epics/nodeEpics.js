@@ -4,7 +4,7 @@ import { map, mergeMap } from "rxjs/operators";
 import { commandResponse, fetchNodeDetail, FETCH_ALL_NODE_DETAILS, FETCH_NODES, FETCH_NODE_DETAIL, SEND_COMMAND, updateNodeDetail, updateNodes, updateAllNodeDetails, FETCH_NODE_HISTORY, updateNodeHistory,fetchAllNodeDetails ,UPDATE_NODE_DETAIL, addToHistory } from "../actions/nodes";
 
 
-const HOST = `https://spmu.herokuapp.com`
+const HOST = `https://syed-app-512.herokuapp.com`
 
 export const fetchNodesEpic = (action$, store) =>
     action$
